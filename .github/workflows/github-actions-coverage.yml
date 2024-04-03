@@ -18,7 +18,8 @@ jobs:
       - name: Set up Java
         uses: actions/setup-java@v2
         with:
-          java-version: '17'
+          java-version: '17'  # Spécifiez ici la version de Java que vous utilisez
+          distribution: 'adopt'  # Spécifiez la distribution de Java
 
       # Exécuter les tests
       - name: Run tests
