@@ -1,0 +1,39 @@
+name: Check Code Coverage
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  check-coverage:
+    name: Check Code Coverage
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+
+      # Exécuter les tests
+      - name: Run tests
+        run: |
+          ./all_tests # Remplacez par la commande pour exécuter vos tests
+
+      # Vérifier la couverture du code
+      - name: Check code coverage
+        run: |
+          # Remplacez la commande ci-dessous par celle qui vérifie votre couverture de code
+          # Assurez-vous que cette commande renvoie le pourcentage de couverture de code
+          coverage_percentage=$(./gradlew jacocoTestReport | grep -oP '(?<=coverage: )[0-9]+')
+          if [ "$coverage_percentage" -lt 90 ]; then
+            echo "Code coverage is below 90%. Aborting push."
+            exit 1
+          else
+            echo "Code coverage is acceptable."
+          fi
