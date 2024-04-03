@@ -23,18 +23,8 @@ jobs:
 
       # Exécuter les tests
       - name: Run tests
-        run: |
-          #./all_tests # Remplacez par la commande pour exécuter vos tests
+        run: mvn test
 
       # Vérifier la couverture du code
       - name: Check code coverage
-        run: |
-          # Remplacez la commande ci-dessous par celle qui vérifie votre couverture de code
-          # Assurez-vous que cette commande renvoie le pourcentage de couverture de code
-          #coverage_percentage=$(./gradlew jacocoTestReport | grep -oP '(?<=coverage: )[0-9]+')
-          #if [ "$coverage_percentage" -lt 90 ]; then
-            #echo "Code coverage is below 90%. Aborting push."
-            #exit 1
-          #else
-            #echo "Code coverage is acceptable."
-          #fi
+        run: mvn jacoco:check@jacoco-check
