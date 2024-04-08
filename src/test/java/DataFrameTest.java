@@ -1,17 +1,19 @@
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
-import java.util.List;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class DataFrameTest {
     @Test
     public void testDataFrameCreation() {
         System.out.println("_________________Création d'un DataFrame de test_________________");
-        List<List<Object>> data = Arrays.asList(
-                Arrays.asList(1, "Bonjour", true),
-                Arrays.asList(2, "Monde", false)
-        );
+        List<List<Object>> data = new ArrayList<>(Arrays.asList(
+                new ArrayList<>(Arrays.asList(1, "Bonjour", true)),
+                new ArrayList<>(Arrays.asList(2, "Monde", false))
+        ));
         /* La liste de liste est de cette forme
         [
             [1, "Bonjour", true],
@@ -41,17 +43,17 @@ public class DataFrameTest {
     @Test
     public void testAjouterLigne() {
         System.out.println("_________________Ajout d'une ligne au DataFrame de test_________________");
-        List<List<Object>> data = Arrays.asList(
-                Arrays.asList(1, "Bonjour", true),
-                Arrays.asList(2, "Monde", false)
-        );
+        List<List<Object>> data = new ArrayList<>(Arrays.asList(
+                new ArrayList<>(Arrays.asList(1, "Bonjour", true)),
+                new ArrayList<>(Arrays.asList(2, "Monde", false))
+        ));
         LinkedHashMap<String, Class<?>> columns = new LinkedHashMap<>();
         columns.put("A", Integer.class);
         columns.put("B", String.class);
         columns.put("C", Boolean.class);
         DataFrame df = new DataFrame(data, columns);
 
-        List<Object> ligne = Arrays.asList(3, "Salut", true);
+        List<Object> ligne = Arrays.asList(3, "Salut", true); // Utilisation de Arrays.asList
         df.ajouterLigne(ligne);
 
         // Afficher le DataFrame de test
@@ -62,10 +64,10 @@ public class DataFrameTest {
     @Test
     public void testAjouterLigneInvalide(){
         System.out.println("_________________Ajout d'une ligne (invalide) au DataFrame de test_________________");
-        List<List<Object>> data = Arrays.asList(
-                Arrays.asList(1, "Bonjour", true),
-                Arrays.asList(2, "Monde", false)
-        );
+        List<List<Object>> data = new ArrayList<>(Arrays.asList(
+                new ArrayList<>(Arrays.asList(1, "Bonjour", true)),
+                new ArrayList<>(Arrays.asList(2, "Monde", false))
+        ));
         LinkedHashMap<String, Class<?>> columns = new LinkedHashMap<>();
         columns.put("A", Integer.class);
         columns.put("B", String.class);
@@ -76,14 +78,31 @@ public class DataFrameTest {
         assertThrows(IllegalArgumentException.class, () -> df.ajouterLigne(ligne));
         System.out.println();
     }
+    @Test
+    public void testAjouterLigneInvalide2(){
+        System.out.println("_________________Ajout d'une ligne (invalide) au DataFrame de test_________________");
+        List<List<Object>> data = new ArrayList<>(Arrays.asList(
+                new ArrayList<>(Arrays.asList(1, "Bonjour", true)),
+                new ArrayList<>(Arrays.asList(2, "Monde", false))
+        ));
+        LinkedHashMap<String, Class<?>> columns = new LinkedHashMap<>();
+        columns.put("A", Integer.class);
+        columns.put("B", String.class);
+        columns.put("C", Boolean.class);
+        DataFrame df = new DataFrame(data, columns);
+
+        List<Object> ligne = null;
+        assertThrows(IllegalArgumentException.class, () -> df.ajouterLigne(ligne));
+        System.out.println();
+    }
 
     @Test
     public void testSupprimerLigne() {
         System.out.println("_________________Suppression d'une ligne du DataFrame de test_________________");
-        List<List<Object>> data = Arrays.asList(
-                Arrays.asList(1, "Bonjour", true),
-                Arrays.asList(2, "Monde", false)
-        );
+        List<List<Object>> data = new ArrayList<>(Arrays.asList(
+                new ArrayList<>(Arrays.asList(1, "Bonjour", true)),
+                new ArrayList<>(Arrays.asList(2, "Monde", false))
+        ));
         LinkedHashMap<String, Class<?>> columns = new LinkedHashMap<>();
         columns.put("A", Integer.class);
         columns.put("B", String.class);
@@ -100,10 +119,10 @@ public class DataFrameTest {
     @Test
     public void testSupprimerLigneInvalide(){
         System.out.println("_________________Suppression d'une ligne (invalide) du DataFrame de test_________________");
-        List<List<Object>> data = Arrays.asList(
-                Arrays.asList(1, "Bonjour", true),
-                Arrays.asList(2, "Monde", false)
-        );
+        List<List<Object>> data = new ArrayList<>(Arrays.asList(
+                new ArrayList<>(Arrays.asList(1, "Bonjour", true)),
+                new ArrayList<>(Arrays.asList(2, "Monde", false))
+        ));
         LinkedHashMap<String, Class<?>> columns = new LinkedHashMap<>();
         columns.put("A", Integer.class);
         columns.put("B", String.class);
@@ -117,10 +136,10 @@ public class DataFrameTest {
     @Test
     public void testSupprimerColonne() {
         System.out.println("_________________Suppression d'une colonne du DataFrame de test_________________");
-        List<List<Object>> data = Arrays.asList(
-                Arrays.asList(1, "Bonjour", true),
-                Arrays.asList(2, "Monde", false)
-        );
+        List<List<Object>> data = new ArrayList<>(Arrays.asList(
+                new ArrayList<>(Arrays.asList(1, "Bonjour", true)),
+                new ArrayList<>(Arrays.asList(2, "Monde", false))
+        ));
         LinkedHashMap<String, Class<?>> columns = new LinkedHashMap<>();
         columns.put("A", Integer.class);
         columns.put("B", String.class);
@@ -136,10 +155,10 @@ public class DataFrameTest {
     @Test
     public void testSupprimerColonneInvalide(){
         System.out.println("_________________Suppression d'une colonne (invalide) du DataFrame de test_________________");
-        List<List<Object>> data = Arrays.asList(
-                Arrays.asList(1, "Bonjour", true),
-                Arrays.asList(2, "Monde", false)
-        );
+        List<List<Object>> data = new ArrayList<>(Arrays.asList(
+                new ArrayList<>(Arrays.asList(1, "Bonjour", true)),
+                new ArrayList<>(Arrays.asList(2, "Monde", false))
+        ));
         LinkedHashMap<String, Class<?>> columns = new LinkedHashMap<>();
         columns.put("A", Integer.class);
         columns.put("B", String.class);
@@ -153,10 +172,10 @@ public class DataFrameTest {
     @Test
     public void testGetters() {
         System.out.println("_________________Test des getters_________________");
-        List<List<Object>> data = Arrays.asList(
-                Arrays.asList(1, "Bonjour", true),
-                Arrays.asList(2, "Monde", false)
-        );
+        List<List<Object>> data = new ArrayList<>(Arrays.asList(
+                new ArrayList<>(Arrays.asList(1, "Bonjour", true)),
+                new ArrayList<>(Arrays.asList(2, "Monde", false))
+        ));
         LinkedHashMap<String, Class<?>> columns = new LinkedHashMap<>();
         columns.put("A", Integer.class);
         columns.put("B", String.class);
@@ -171,10 +190,10 @@ public class DataFrameTest {
     @Test
     public void testObtenirValeur() {
         System.out.println("_________________Obtenir une valeur du DataFrame de test_________________");
-        List<List<Object>> data = Arrays.asList(
-                Arrays.asList(1, "Bonjour", true),
-                Arrays.asList(2, "Monde", false)
-        );
+        List<List<Object>> data = new ArrayList<>(Arrays.asList(
+                new ArrayList<>(Arrays.asList(1, "Bonjour", true)),
+                new ArrayList<>(Arrays.asList(2, "Monde", false))
+        ));
         LinkedHashMap<String, Class<?>> columns = new LinkedHashMap<>();
         columns.put("A", Integer.class);
         columns.put("B", String.class);
@@ -189,10 +208,10 @@ public class DataFrameTest {
     @Test
     public void testObtenirValeurInvalideColone(){
         System.out.println("_________________Obtenir une valeur (Colone invalide) du DataFrame de test_________________");
-        List<List<Object>> data = Arrays.asList(
-                Arrays.asList(1, "Bonjour", true),
-                Arrays.asList(2, "Monde", false)
-        );
+        List<List<Object>> data = new ArrayList<>(Arrays.asList(
+                new ArrayList<>(Arrays.asList(1, "Bonjour", true)),
+                new ArrayList<>(Arrays.asList(2, "Monde", false))
+        ));
         LinkedHashMap<String, Class<?>> columns = new LinkedHashMap<>();
         columns.put("A", Integer.class);
         columns.put("B", String.class);
@@ -206,10 +225,10 @@ public class DataFrameTest {
     @Test
     public void testObtenirValeurInvalideLigne(){
         System.out.println("_________________Obtenir une valeur (Ligne invalide) du DataFrame de test_________________");
-        List<List<Object>> data = Arrays.asList(
-                Arrays.asList(1, "Bonjour", true),
-                Arrays.asList(2, "Monde", false)
-        );
+        List<List<Object>> data = new ArrayList<>(Arrays.asList(
+                new ArrayList<>(Arrays.asList(1, "Bonjour", true)),
+                new ArrayList<>(Arrays.asList(2, "Monde", false))
+        ));
         LinkedHashMap<String, Class<?>> columns = new LinkedHashMap<>();
         columns.put("A", Integer.class);
         columns.put("B", String.class);
@@ -223,10 +242,10 @@ public class DataFrameTest {
     @Test
     public void testGetIndexesColone() {
         System.out.println("_________________Obtenir l'index d'une colonne du DataFrame de test_________________");
-        List<List<Object>> data = Arrays.asList(
-                Arrays.asList(1, "Bonjour", true),
-                Arrays.asList(2, "Monde", false)
-        );
+        List<List<Object>> data = new ArrayList<>(Arrays.asList(
+                new ArrayList<>(Arrays.asList(1, "Bonjour", true)),
+                new ArrayList<>(Arrays.asList(2, "Monde", false))
+        ));
         LinkedHashMap<String, Class<?>> columns = new LinkedHashMap<>();
         columns.put("A", Integer.class);
         columns.put("B", String.class);
@@ -238,30 +257,13 @@ public class DataFrameTest {
         System.out.println();
     }
 
-//    @Test
-//    public void testGetIndexesColoneInvalide(){
-//        System.out.println("_________________Obtenir l'index d'une colonne (invalide) du DataFrame de test_________________");
-//        List<List<Object>> data = Arrays.asList(
-//                Arrays.asList(1, "Bonjour", true),
-//                Arrays.asList(2, "Monde", false)
-//        );
-//        LinkedHashMap<String, Class<?>> columns = new LinkedHashMap<>();
-//        columns.put("A", Integer.class);
-//        columns.put("B", String.class);
-//        columns.put("C", Boolean.class);
-//        DataFrame df = new DataFrame(data, columns);
-//
-//        assertThrows(IllegalArgumentException.class, () -> df.getIndexesColone("D"));
-//        System.out.println();
-//    }
-
     @Test
     public void testGetIndexesColoneInvalide(){
         System.out.println("_________________Obtenir l'index d'une colonne (invalide) du DataFrame de test_________________");
-        List<List<Object>> data = Arrays.asList(
-                Arrays.asList(1, "Bonjour", true),
-                Arrays.asList(2, "Monde", false)
-        );
+        List<List<Object>> data = new ArrayList<>(Arrays.asList(
+                new ArrayList<>(Arrays.asList(1, "Bonjour", true)),
+                new ArrayList<>(Arrays.asList(2, "Monde", false))
+        ));
         LinkedHashMap<String, Class<?>> columns = new LinkedHashMap<>();
         columns.put("A", Integer.class);
         columns.put("B", String.class);
@@ -276,10 +278,10 @@ public class DataFrameTest {
     @Test
     public void testRobustesseIndexObtenirValeur(){
         System.out.println("_________________Test de robustesse (Index négatif)_________________");
-        List<List<Object>> data = Arrays.asList(
-                Arrays.asList(1, "Bonjour", true),
-                Arrays.asList(2, "Monde", false)
-        );
+        List<List<Object>> data = new ArrayList<>(Arrays.asList(
+                new ArrayList<>(Arrays.asList(1, "Bonjour", true)),
+                new ArrayList<>(Arrays.asList(2, "Monde", false))
+        ));
         LinkedHashMap<String, Class<?>> columns = new LinkedHashMap<>();
         columns.put("A", Integer.class);
         columns.put("B", String.class);
@@ -293,10 +295,10 @@ public class DataFrameTest {
     @Test
     public void testRobustesseIndexSupprimerLigneMore(){
         System.out.println("_________________Test de robustesse (Index invalide)_________________");
-        List<List<Object>> data = Arrays.asList(
-                Arrays.asList(1, "Bonjour", true),
-                Arrays.asList(2, "Monde", false)
-        );
+        List<List<Object>> data = new ArrayList<>(Arrays.asList(
+                new ArrayList<>(Arrays.asList(1, "Bonjour", true)),
+                new ArrayList<>(Arrays.asList(2, "Monde", false))
+        ));
         LinkedHashMap<String, Class<?>> columns = new LinkedHashMap<>();
         columns.put("A", Integer.class);
         columns.put("B", String.class);
@@ -311,10 +313,10 @@ public class DataFrameTest {
     @Test
     public void testRobustesseIndexSupprimerLigneNegative(){
         System.out.println("_________________Test de robustesse (Index invalide)_________________");
-        List<List<Object>> data = Arrays.asList(
-                Arrays.asList(1, "Bonjour", true),
-                Arrays.asList(2, "Monde", false)
-        );
+        List<List<Object>> data = new ArrayList<>(Arrays.asList(
+                new ArrayList<>(Arrays.asList(1, "Bonjour", true)),
+                new ArrayList<>(Arrays.asList(2, "Monde", false))
+        ));
         LinkedHashMap<String, Class<?>> columns = new LinkedHashMap<>();
         columns.put("A", Integer.class);
         columns.put("B", String.class);
@@ -328,10 +330,10 @@ public class DataFrameTest {
     @Test
     public void testRobustesseIndexSupprimerColonne(){
         System.out.println("_________________Test de robustesse (Index invalide)_________________");
-        List<List<Object>> data = Arrays.asList(
-                Arrays.asList(1, "Bonjour", true),
-                Arrays.asList(2, "Monde", false)
-        );
+        List<List<Object>> data = new ArrayList<>(Arrays.asList(
+                new ArrayList<>(Arrays.asList(1, "Bonjour", true)),
+                new ArrayList<>(Arrays.asList(2, "Monde", false))
+        ));
         LinkedHashMap<String, Class<?>> columns = new LinkedHashMap<>();
         columns.put("A", Integer.class);
         columns.put("B", String.class);

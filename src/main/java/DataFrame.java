@@ -1,13 +1,13 @@
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.LinkedHashMap;
 
 public class DataFrame {
     private final List<List<Object>> data;
     private final LinkedHashMap<String, Class<?>> columns;
 
     public DataFrame(List<List<Object>> data, LinkedHashMap<String, Class<?>> columns) {
-        this.data = new ArrayList<>(data);
+        this.data = data;
         this.columns = columns;
     }
 
@@ -20,19 +20,14 @@ public class DataFrame {
     }
 
     public int getIndexesColone(String nomColonne) {
-            int indexColonne = 0;
-            int res = -1;
-            for (String columnName : columns.keySet()) {
-                if (columnName.equals(nomColonne)) {
-                    res = indexColonne;
-                    break;
-                }
-                indexColonne++;
+        int index = 0;
+        for (String columnName : columns.keySet()) {
+            if (columnName.equals(nomColonne)) {
+                return index;
             }
-            if (res == -1) {
-                throw new IllegalArgumentException("Le nom de la colonne est invalide");
-            }
-        return res;
+            index++;
+        }
+        throw new IllegalArgumentException("Le nom de la colonne est invalide");
     }
 
     // Méthode pour afficher le DataFrame
@@ -52,10 +47,11 @@ public class DataFrame {
 
     // Méthode pour ajouter une ligne au DataFrame
     public void ajouterLigne(List<Object> ligne) {
-        if (ligne.size() != columns.size()) {
-            throw new IllegalArgumentException("La ligne ne contient pas le bon nombre de colonnes");
+        // Validation des données d'entrée
+        if (ligne == null || ligne.size() != columns.size()) {
+            throw new IllegalArgumentException("La ligne est invalide");
         }
-        data.add(ligne);
+        data.add(new ArrayList<>(ligne));
     }
 
     // Méthode pour supprimer une ligne du DataFrame
@@ -72,13 +68,10 @@ public class DataFrame {
             throw new IllegalArgumentException("Le nom de la colonne à supprimer est invalide");
         }
         int indexColonne = getIndexesColone(nomColonne);
-        // Pour chaque ligne, créer une copie modifiable et supprimer l'élément correspondant à l'index de la colonne
-        for (int i = 0; i < data.size(); i++) {
-            List<Object> ligne = new ArrayList<>(data.get(i));
-            ligne.remove(indexColonne);
-            data.set(i, ligne); // Mettre à jour la ligne dans la liste de données
-        }
         columns.remove(nomColonne);
+        for (List<Object> rowData : data) {
+            rowData.remove(indexColonne);
+        }
     }
 
     // Méthode pour obtenir une valeur du DataFrame
