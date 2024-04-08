@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.LinkedHashMap;
 
@@ -8,6 +9,15 @@ public class DataFrame {
 
     public DataFrame(List<List<Object>> data, LinkedHashMap<String, Class<?>> columns) {
         this.data = data;
+        this.columns = columns;
+    }
+
+    public DataFrame(Object[][] data, LinkedHashMap<String, Class<?>> columns) {
+        this.data = new ArrayList<>();
+        for (Object[] row : data) {
+            List<Object> rowData = new ArrayList<>(Arrays.asList(row));
+            this.data.add(rowData);
+        }
         this.columns = columns;
     }
 

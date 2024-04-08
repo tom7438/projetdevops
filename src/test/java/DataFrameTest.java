@@ -19,10 +19,29 @@ public class DataFrameTest {
         return new DataFrame(data, columns);
     }
 
+    private DataFrame createTestDataFrame2() {
+        Object[][] data = new Object[][] {
+            {1, "Bonjour", true},
+            {2, "Monde", false}
+        };
+        LinkedHashMap<String, Class<?>> columns = new LinkedHashMap<>();
+        columns.put("A", Integer.class);
+        columns.put("B", String.class);
+        columns.put("C", Boolean.class);
+        return new DataFrame(data, columns);
+    }
+
     @Test
-    public void testDataFrameCreation() {
+    public void testDataFrameCreationList() {
         System.out.println("_________________Création d'un DataFrame de test_________________");
         DataFrame df = createTestDataFrame();
+        df.afficherDataFrame();
+        System.out.println();
+    }
+    @Test
+    public void testDataFrameCreationArray() {
+        System.out.println("_________________Création d'un DataFrame de test_________________");
+        DataFrame df = createTestDataFrame2();
         df.afficherDataFrame();
         System.out.println();
     }
