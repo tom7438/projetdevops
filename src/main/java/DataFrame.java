@@ -20,18 +20,19 @@ public class DataFrame {
     }
 
     public int getIndexesColone(String nomColonne) {
-//        if (!columns.containsKey(nomColonne)) {
-//            throw new IllegalArgumentException("Le nom de la colonne est invalide");
-//        } else {
             int indexColonne = 0;
+            int res = -1;
             for (String columnName : columns.keySet()) {
                 if (columnName.equals(nomColonne)) {
-                    return indexColonne;
+                    res = indexColonne;
+                    break;
                 }
                 indexColonne++;
             }
-//        }
-        return -1;
+            if (res == -1) {
+                throw new IllegalArgumentException("Le nom de la colonne est invalide");
+            }
+        return res;
     }
 
     // Méthode pour afficher le DataFrame

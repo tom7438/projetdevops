@@ -268,8 +268,7 @@ public class DataFrameTest {
         columns.put("C", Boolean.class);
         DataFrame df = new DataFrame(data, columns);
 
-        int index = df.getIndexesColone("E");
-        System.out.println("L'index de la colonne est : " + index);
+        assertThrows(IllegalArgumentException.class, () -> df.getIndexesColone("E"));
         System.out.println();
     }
 
@@ -288,7 +287,6 @@ public class DataFrameTest {
         DataFrame df = new DataFrame(data, columns);
 
         assertThrows(IllegalArgumentException.class, () -> df.obtenirValeur(-1, "A"));
-
         System.out.println();
     }
 
