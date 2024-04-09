@@ -1,7 +1,10 @@
 # Projet_DevOps à l'UFR IM2AG 2024
 Badges
 
-![Codecov](https://img.shields.io/codecov/c/github/tom7438/Projet_DevOps?logo=junit5)
+[![codecov](https://codecov.io/gh/tom7438/Projet_DevOps/graph/badge.svg?token=5INFKCFXE6)](https://codecov.io/gh/tom7438/Projet_DevOps)
+
+[Consulter la couverture de code](./target/site/jacoco/index.html)
+
 
 ![GitHub Issues or Pull Requests](https://img.shields.io/github/issues-pr/tom7438/Projet_DevOps)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/tom7438/Projet_DevOps)
