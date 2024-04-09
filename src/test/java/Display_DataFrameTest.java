@@ -1,19 +1,17 @@
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class Display_DataFrameTest {
-    DataFrame df;
-    DataFrame df2;
+    static DataFrame df;
+    static DataFrame df2;
 
-    @BeforeEach
-    void setUp() {
+    @BeforeAll
+    static void setUp() {
         // Création d'un DataFrame
         List<List<Object>> data = new ArrayList<>();
         List<Object> row1 = new ArrayList<>();
