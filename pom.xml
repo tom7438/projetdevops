@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>RTL2</groupId>
-    <artifactId>RTL2_DataLibrary</artifactId>
+    <groupId>rtl2</groupId>
+    <artifactId>rtl2</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -22,6 +22,14 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub RTL2 DevOps project</name>
+            <url>https://maven.pkg.github.com/tom7438/projetdevops</url>
+        </repository>
+    </distributionManagement>
 
     <build>
         <directory>${basedir}/target</directory>
