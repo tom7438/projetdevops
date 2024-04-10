@@ -19,7 +19,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '17'  # Spécifiez ici la version de Java que vous utilisez
-          distribution: 'openjdk'  # Spécifiez la distribution de Java
+          distribution: 'adopt'  # Spécifiez la distribution de Java
 
       # Exécuter les tests
       - name: Run tests
@@ -28,3 +28,10 @@ jobs:
       # Vérifier la couverture du code
       - name: Check code coverage
         run: mvn jacoco:check@jacoco-check
+
+      # Télécharger et exécuter le script Codecov
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4.0.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: tom7438/Projet_DevOps
