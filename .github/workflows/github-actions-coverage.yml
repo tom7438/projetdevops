@@ -34,7 +34,7 @@ jobs:
         uses: codecov/codecov-action@v4.0.1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          slug: tom7438/projet_devops
+          slug: tom7438/projetdevops
 
   publish:
     needs: [check-coverage]
