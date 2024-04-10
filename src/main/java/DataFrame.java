@@ -214,6 +214,56 @@ public class DataFrame {
         return new DataFrame(new_data, new_columns);
     }
 
+    //Fonction de sélection qui prend en entrée un booléen du type "A > 2" et retourne un DataFrame contenant les lignes pour lesquelles la condition est vraie.
+    public DataFrame select(String condition) {
+        //récupérer la colonne et la valeur de la condition
+        String[] parts = condition.split(" ");
+        String column = parts[0];
+        String operator = parts[1];
+        int value = Integer.parseInt(parts[2]);
+
+        //récupérer la colonne à partir de son nom
+        DataFrame d = select_column(new String[] {column});
+
+        //récupérer les données de la colonne selon la condition
+        List<List<Object>> new_data = new ArrayList<>();
+        for (int i = 0; i < d.data.size(); i++) {
+            switch (operator) {
+                case ">" -> {
+                    if ((int) d.data.get(i).get(0) > value) {
+                        new_data.add(d.data.get(i));
+                    }
+                }
+                case "<" -> {
+                    if ((int) d.data.get(i).get(0) < value) {
+                        new_data.add(d.data.get(i));
+                    }
+                }
+                case ">=" -> {
+                    if ((int) d.data.get(i).get(0) >= value) {
+                        new_data.add(d.data.get(i));
+                    }
+                }
+                case "<=" -> {
+                    if ((int) d.data.get(i).get(0) <= value) {
+                        new_data.add(d.data.get(i));
+                    }
+                }
+                case "==" -> {
+                    if ((int) d.data.get(i).get(0) == value) {
+                        new_data.add(d.data.get(i));
+                    }
+                }
+                case "!=" -> {
+                    if ((int) d.data.get(i).get(0) != value) {
+                        new_data.add(d.data.get(i));
+                    }
+                }
+                default -> throw new IllegalArgumentException("Operator not found");
+            }
+        }
+        return new DataFrame(new_data, d.columns);
+    }
     public void display() {
         System.out.println(this);
     }
