@@ -37,6 +37,7 @@ jobs:
           slug: tom7438/projet_devops
 
   publish:
+    needs: [check-coverage]
     name: publish jar to Github Packages
     runs-on: ubuntu-latest
     permissions:
