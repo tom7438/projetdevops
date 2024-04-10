@@ -1,4 +1,3 @@
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
@@ -26,9 +25,9 @@ public class DataFrame {
     }
 
     public DataFrame select_column(String[] column_names) {
-        int [] indexes = new int[column_names.length];
+        int[] indexes = new int[column_names.length];
         List<List<Object>> new_data = new ArrayList<>();
-        HashMap<String, Class<?>> new_columns = new HashMap<>();
+        LinkedHashMap<String, Class<?>> new_columns = new LinkedHashMap<>();
         for (int i = 0; i < column_names.length; i++) {
             indexes[i] = -1;
             for (int j = 0; j < data.get(0).size(); j++) {
@@ -51,12 +50,10 @@ public class DataFrame {
         }
 
         return new DataFrame(new_data, new_columns);
-
-
+    }
     /*public LinkedHashMap<String, Class<?>> getColumns() {
         return columns;
     }*/
-
     public void display() {
         System.out.println(this);
     }

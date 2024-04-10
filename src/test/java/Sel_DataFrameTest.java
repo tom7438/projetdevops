@@ -1,7 +1,7 @@
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -14,7 +14,7 @@ public class Sel_DataFrameTest {
                 Arrays.asList(4, 5, 6),
                 Arrays.asList(7, 8, 9)
             ),
-            new HashMap<>() {{
+            new LinkedHashMap<>() {{
                 put("A", Integer.class);
                 put("B", Integer.class);
                 put("C", Integer.class);
@@ -37,15 +37,14 @@ public class Sel_DataFrameTest {
                 Arrays.asList(4, 5, 6),
                 Arrays.asList(7, 8, 9)
             ),
-            new HashMap<>() {{
+            new LinkedHashMap<>() {{
                 put("A", Integer.class);
                 put("B", Integer.class);
                 put("C", Integer.class);
             }}
         );
         DataFrame new_df = df.select_column(new String[] {"A", "C"});
-        //Print the new data
-        System.out.println(new_df.getData());
+
         assertEquals(
             new_df.getData(),
             Arrays.asList(
@@ -63,7 +62,7 @@ public class Sel_DataFrameTest {
                 Arrays.asList(4, 5, 6),
                 Arrays.asList(7, 8, 9)
             ),
-            new HashMap<>() {{
+            new LinkedHashMap<>() {{
                 put("A", Integer.class);
                 put("B", Integer.class);
                 put("C", Integer.class);
