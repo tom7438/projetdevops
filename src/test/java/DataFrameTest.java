@@ -1,4 +1,3 @@
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,7 +25,7 @@ public class DataFrameTest {
         assertNotEquals(null, df);
     }
 
-    @BeforeEach
+    @Test
     public void testDataFrameCreationArray() {
         System.out.println("_________________Création d'un DataFrame de test_________________");
         Object[][] data = new Object[][] {
