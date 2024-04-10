@@ -40,21 +40,6 @@ public class DataFrame {
         throw new IllegalArgumentException("Le nom de la colonne est invalide");
     }
 
-    // Méthode pour afficher le DataFrame
-    public void afficherDataFrame() {
-        System.out.println("DataFrame :");
-        for (String columnName : columns.keySet()) {
-            System.out.print(columnName + "\t");
-        }
-        System.out.println();
-        for (List<Object> rowData : data) {
-            for (Object value : rowData) {
-                System.out.print(value.toString() + "\t");
-            }
-            System.out.println();
-        }
-    }
-
     // Méthode pour ajouter une ligne au DataFrame
     public void ajouterLigne(List<Object> ligne) {
         // Validation des données d'entrée

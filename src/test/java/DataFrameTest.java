@@ -35,14 +35,16 @@ public class DataFrameTest {
     public void testDataFrameCreationList() {
         System.out.println("_________________Création d'un DataFrame de test_________________");
         DataFrame df = createTestDataFrame();
-        df.afficherDataFrame();
+        assertNotEquals(null, df);
+        df.display();
         System.out.println();
     }
     @Test
     public void testDataFrameCreationArray() {
         System.out.println("_________________Création d'un DataFrame de test_________________");
         DataFrame df = createTestDataFrame2();
-        df.afficherDataFrame();
+        assertNotEquals(null, df);
+        df.display();
         System.out.println();
     }
 
@@ -52,7 +54,6 @@ public class DataFrameTest {
         DataFrame df = createTestDataFrame();
         List<Object> ligne = Arrays.asList(3, "Salut", true);
         df.ajouterLigne(ligne);
-        df.afficherDataFrame();
         System.out.println();
     }
 
@@ -77,7 +78,6 @@ public class DataFrameTest {
         System.out.println("_________________Suppression d'une ligne du DataFrame de test_________________");
         DataFrame df = createTestDataFrame();
         df.supprimerLigne(0);
-        df.afficherDataFrame();
         System.out.println();
     }
 
@@ -94,7 +94,6 @@ public class DataFrameTest {
         System.out.println("_________________Suppression d'une colonne du DataFrame de test_________________");
         DataFrame df = createTestDataFrame();
         df.supprimerColonne("B");
-        df.afficherDataFrame();
         System.out.println();
     }
 
