@@ -2,88 +2,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.NoSuchFileException;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.LinkedHashMap;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.nio.file.NoSuchFileException;
-import java.util.*;
 import java.util.regex.Pattern;
 
 public class DataFrame {
 
-    private class DataFrameParser {
-
-        private final Scanner scanner;
-
-        private DataFrameParser(Scanner scanner) {
-            this.scanner = scanner;
-            findColumnsName();
-            fillData();
-        }
-
-        private void findColumnsName() {
-            String[] names = scanner.nextLine().trim().split(",");
-            for(String name : names) {
-                columns.put(name, null);
-            }
-        }
-
-        private void fillData() {
-            boolean typeFound = false;
-            List<String> colsNames = new ArrayList<>(columns.keySet());
-
-            while(scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                String[] datas = line.split(",");
-
-                if(!typeFound) {
-                    int j = 0;
-                    for(String col : columns.keySet()) {
-                        columns.put(col, findDataType(datas[j]));
-                        j++;
-                    }
-                    typeFound = true;
-                }
-
-                List<Object> lineData = new ArrayList<>();
-                int i = 0;
-                for(String data : datas) {
-                    Class<?> colClass = columns.get(colsNames.get(i));
-                    if(colClass == Integer.class) {
-                        lineData.add(Integer.parseInt(data));
-                    } else if(colClass == Float.class) {
-                        lineData.add(Float.parseFloat(data));
-                    } else {
-                        lineData.add(data);
-                    }
-                    i++;
-                }
-                data.add(lineData);
-            }
-        }
-
-        private Class<?> findDataType(String data) {
-            Pattern numbers = Pattern.compile("-?[0-9]+");
-            Pattern floats = Pattern.compile("-?[0-9]+.[0-9]+");
-
-            if(numbers.matcher(data).matches()) {
-                return Integer.class;
-            } else if(floats.matcher(data).matches()) {
-                return Float.class;
-            }
-            return String.class;
-        }
-    }
-
     private final List<List<Object>> data;
     private final LinkedHashMap<String, Class<?>> columns;
+
+    private float min;
+    private float max;
 
     public DataFrame(List<List<Object>> data, LinkedHashMap<String, Class<?>> columns) {
         this.data = data;
@@ -104,7 +31,7 @@ public class DataFrame {
         this.columns = new LinkedHashMap<>();
 
         String[] extension = fileName.split("\\.");
-        if(!extension[extension.length-1].equals("csv")) {
+        if (!extension[extension.length - 1].equals("csv")) {
             throw new NoSuchFileException("Wrong file extension, should be csv");
         }
 
@@ -223,7 +150,7 @@ public class DataFrame {
         int value = Integer.parseInt(parts[2]);
 
         //récupérer la colonne à partir de son nom
-        DataFrame d = select_column(new String[] {column});
+        DataFrame d = select_column(new String[]{column});
 
         //récupérer les données de la colonne selon la condition
         List<List<Object>> new_data = new ArrayList<>();
@@ -264,6 +191,7 @@ public class DataFrame {
         }
         return new DataFrame(new_data, d.columns);
     }
+
     public void display() {
         System.out.println(this);
     }
@@ -296,7 +224,6 @@ public class DataFrame {
         return sb.toString();
     }
 
-
     public void displayFirstLines(int n) {
         if (n > data.size()) {
             System.out.println("DataFrame a moins de " + n + " lignes");
@@ -326,7 +253,7 @@ public class DataFrame {
     }
 
     public void displayLastLines(int n) {
-        if(n > data.size()) {
+        if (n > data.size()) {
             System.out.println("DataFrame a moins de " + n + " lignes");
             n = data.size();
         }
@@ -371,5 +298,300 @@ public class DataFrame {
         }
         sb.append("\n");
         return sb;
+    }
+
+    public float min(String col) {
+        int index = 0;
+        for (String key : columns.keySet()) {
+            if (key.equals(col)) {
+                break;
+            }
+            index++;
+        }
+        if (index == columns.size()) {
+            System.err.println("La colonne " + col + " n'existe pas");
+            return -1;
+        }
+        // Check if the column is numeric
+        if (!columns.get(col).getSimpleName().equals("Float") && !columns.get(col).getSimpleName().equals("Integer") && !columns.get(col).getSimpleName().equals("Double") && !columns.get(col).getSimpleName().equals("Long")) {
+            // Afficher le type de la colonne
+            System.err.println("type = " + columns.get(col).getSimpleName() + " pour la colonne " + col);
+            System.err.println("La colonne " + col + " n'est pas numérique");
+            return -2;
+        }
+
+        min = Float.MAX_VALUE;
+
+        for (List<Object> row : data) {
+            Object obj = row.get(index);
+            float value = ((Number) obj).floatValue();
+            if (value < min) {
+                min = value;
+            }
+        }
+
+        return min;
+    }
+
+    public float min(int numCol) {
+        if (numCol >= columns.size() || numCol < 0) {
+            System.out.println("La colonne " + numCol + " n'existe pas");
+            return -1;
+        }
+        // Check if the column is numeric
+        List<Object> row1 = data.get(0);
+        if (!row1.get(numCol).getClass().getSimpleName().equals("Float") && !row1.get(numCol).getClass().getSimpleName().equals("Integer") && !row1.get(numCol).getClass().getSimpleName().equals("Double") && !row1.get(numCol).getClass().getSimpleName().equals("Long")) {
+            System.out.println("La colonne numéro " + numCol + " n'est pas numérique");
+            return -2;
+        }
+
+        min = Float.MAX_VALUE;
+
+        for (List<Object> row : data) {
+            Object obj = row.get(numCol);
+            float value = ((Number) obj).floatValue();
+            if (value < min) {
+                min = value;
+            }
+        }
+
+        return min;
+    }
+
+    public float max(String col) {
+        int index = 0;
+        for (String key : columns.keySet()) {
+            if (key.equals(col)) {
+                break;
+            }
+            index++;
+        }
+
+        if (index == columns.size()) {
+            System.out.println("La colonne " + col + " n'existe pas");
+            return -1;
+        }
+
+        // Check if the column is numeric
+        if (!columns.get(col).getSimpleName().equals("Float") && !columns.get(col).getSimpleName().equals("Integer") && !columns.get(col).getSimpleName().equals("Double") && !columns.get(col).getSimpleName().equals("Long")) {
+            // Afficher le type de la colonne
+            System.err.println("type = " + columns.get(col).getSimpleName() + " pour la colonne " + col);
+            System.err.println("La colonne " + col + " n'est pas numérique");
+            return -2;
+        }
+
+        max = Float.MIN_VALUE;
+
+        for (List<Object> row : data) {
+            Object obj = row.get(index);
+            float value = ((Number) obj).floatValue();
+            if (value > max) {
+                max = value;
+            }
+        }
+
+        return max;
+    }
+
+    public float max(int numCol) {
+        if (numCol >= columns.size() || numCol < 0) {
+            System.out.println("La colonne " + numCol + " n'existe pas");
+            return -1;
+        }
+
+        // Check if the column is numeric
+        List<Object> row1 = data.get(0);
+        if (!row1.get(numCol).getClass().getSimpleName().equals("Float") && !row1.get(numCol).getClass().getSimpleName().equals("Integer") && !row1.get(numCol).getClass().getSimpleName().equals("Double") && !row1.get(numCol).getClass().getSimpleName().equals("Long")) {
+            System.out.println("La colonne numéro " + numCol + " n'est pas numérique");
+            return -2;
+        }
+
+        max = Float.MIN_VALUE;
+
+        for (List<Object> row : data) {
+            Object obj = row.get(numCol);
+            float value = ((Number) obj).floatValue();
+            if (value > max) {
+                max = value;
+            }
+        }
+
+        return max;
+    }
+
+    public float mean(String col) {
+        int index = 0;
+        for (String key : columns.keySet()) {
+            if (key.equals(col)) {
+                break;
+            }
+            index++;
+        }
+
+        if (index == columns.size()) {
+            System.out.println("La colonne " + col + " n'existe pas");
+            return -1;
+        }
+
+        // Check if the column is numeric
+        if (!columns.get(col).getSimpleName().equals("Float") && !columns.get(col).getSimpleName().equals("Integer") && !columns.get(col).getSimpleName().equals("Double") && !columns.get(col).getSimpleName().equals("Long")) {
+            // Afficher le type de la colonne
+            System.err.println("type = " + columns.get(col).getSimpleName() + " pour la colonne " + col);
+            System.err.println("La colonne " + col + " n'est pas numérique");
+            return -2;
+        }
+
+        float sum = 0;
+        for (List<Object> row : data) {
+            Object obj = row.get(index);
+            float value = ((Number) obj).floatValue();
+            sum += value;
+        }
+
+        return sum / data.size();
+    }
+
+    public float mean(int numCol) {
+        if (numCol >= columns.size() || numCol < 0) {
+            System.out.println("La colonne " + numCol + " n'existe pas");
+            return -1;
+        }
+
+        // Check if the column is numeric
+        List<Object> row1 = data.get(0);
+        if (!row1.get(numCol).getClass().getSimpleName().equals("Float") && !row1.get(numCol).getClass().getSimpleName().equals("Integer") && !row1.get(numCol).getClass().getSimpleName().equals("Double") && !row1.get(numCol).getClass().getSimpleName().equals("Long")) {
+            System.out.println("La colonne numéro " + numCol + " n'est pas numérique");
+            return -2;
+        }
+
+        float sum = 0;
+        for (List<Object> row : data) {
+            Object obj = row.get(numCol);
+            float value = ((Number) obj).floatValue();
+            sum += value;
+        }
+
+        // arrondir à 1 chiffre après la virgule
+        float res = sum / data.size();
+        res = (float) (Math.round(res * 10.0) / 10.0);
+
+        return res;
+    }
+
+    public float sum(String col) {
+        int index = 0;
+        for (String key : columns.keySet()) {
+            if (key.equals(col)) {
+                break;
+            }
+            index++;
+        }
+
+        if (index == columns.size()) {
+            System.out.println("La colonne " + col + " n'existe pas");
+            return -1;
+        }
+
+        // Check if the column is numeric
+        if (!columns.get(col).getSimpleName().equals("Float") && !columns.get(col).getSimpleName().equals("Integer") && !columns.get(col).getSimpleName().equals("Double") && !columns.get(col).getSimpleName().equals("Long")) {
+            // Afficher le type de la colonne
+            System.err.println("type = " + columns.get(col).getSimpleName() + " pour la colonne " + col);
+            System.err.println("La colonne " + col + " n'est pas numérique");
+            return -2;
+        }
+
+        float sum = 0;
+        for (List<Object> row : data) {
+            Object obj = row.get(index);
+            float value = ((Number) obj).floatValue();
+            sum += value;
+        }
+        return sum;
+    }
+
+    public float sum(int numCol) {
+        if (numCol >= columns.size() || numCol < 0) {
+            System.out.println("La colonne " + numCol + " n'existe pas");
+            return -1;
+        }
+
+        // Check if the column is numeric
+        List<Object> row1 = data.get(0);
+        if (!row1.get(numCol).getClass().getSimpleName().equals("Float") && !row1.get(numCol).getClass().getSimpleName().equals("Integer") && !row1.get(numCol).getClass().getSimpleName().equals("Double") && !row1.get(numCol).getClass().getSimpleName().equals("Long")) {
+            System.out.println("La colonne numéro " + numCol + " n'est pas numérique");
+            return -2;
+        }
+
+        float sum = 0;
+        for (List<Object> row : data) {
+            Object obj = row.get(numCol);
+            float value = ((Number) obj).floatValue();
+            sum += value;
+        }
+        return sum;
+    }
+
+    private class DataFrameParser {
+
+        private final Scanner scanner;
+
+        private DataFrameParser(Scanner scanner) {
+            this.scanner = scanner;
+            findColumnsName();
+            fillData();
+        }
+
+        private void findColumnsName() {
+            String[] names = scanner.nextLine().trim().split(",");
+            for (String name : names) {
+                columns.put(name, null);
+            }
+        }
+
+        private void fillData() {
+            boolean typeFound = false;
+            List<String> colsNames = new ArrayList<>(columns.keySet());
+
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                String[] datas = line.split(",");
+
+                if (!typeFound) {
+                    int j = 0;
+                    for (String col : columns.keySet()) {
+                        columns.put(col, findDataType(datas[j]));
+                        j++;
+                    }
+                    typeFound = true;
+                }
+
+                List<Object> lineData = new ArrayList<>();
+                int i = 0;
+                for (String data : datas) {
+                    Class<?> colClass = columns.get(colsNames.get(i));
+                    if (colClass == Integer.class) {
+                        lineData.add(Integer.parseInt(data));
+                    } else if (colClass == Float.class) {
+                        lineData.add(Float.parseFloat(data));
+                    } else {
+                        lineData.add(data);
+                    }
+                    i++;
+                }
+                data.add(lineData);
+            }
+        }
+
+        private Class<?> findDataType(String data) {
+            Pattern numbers = Pattern.compile("-?[0-9]+");
+            Pattern floats = Pattern.compile("-?[0-9]+.[0-9]+");
+
+            if (numbers.matcher(data).matches()) {
+                return Integer.class;
+            } else if (floats.matcher(data).matches()) {
+                return Float.class;
+            }
+            return String.class;
+        }
     }
 }
