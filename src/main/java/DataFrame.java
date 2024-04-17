@@ -190,7 +190,7 @@ public class DataFrame {
                             new_data.add(d.data.get(i));
                         }
                     }
-                    default -> throw new IllegalArgumentException("Operator not found");
+                    default -> throw new IllegalArgumentException("Int Operator not found");
                 }
             }
         } else if (floats.matcher(brutValue).matches()) {
@@ -198,36 +198,36 @@ public class DataFrame {
             for (int i = 0; i < d.data.size(); i++) {
                 switch (operator) {
                     case ">" -> {
-                        if ((float) d.data.get(i).get(column) > value) {
+                        if ((double) d.data.get(i).get(column) > value) {
                             new_data.add(d.data.get(i));
                         }
                     }
                     case "<" -> {
-                        if ((float) d.data.get(i).get(column) < value) {
+                        if ((double) d.data.get(i).get(column) < value) {
                             new_data.add(d.data.get(i));
                         }
                     }
                     case ">=" -> {
-                        if ((float) d.data.get(i).get(column) >= value) {
+                        if ((double) d.data.get(i).get(column) >= value) {
                             new_data.add(d.data.get(i));
                         }
                     }
                     case "<=" -> {
-                        if ((float) d.data.get(i).get(column) <= value) {
+                        if ((double) d.data.get(i).get(column) <= value) {
                             new_data.add(d.data.get(i));
                         }
                     }
                     case "==" -> {
-                        if ((float) d.data.get(i).get(column) == value) {
+                        if ((double) d.data.get(i).get(column) == value) {
                             new_data.add(d.data.get(i));
                         }
                     }
                     case "!=" -> {
-                        if ((float) d.data.get(i).get(column) != value) {
+                        if ((double) d.data.get(i).get(column) != value) {
                             new_data.add(d.data.get(i));
                         }
                     }
-                    default -> throw new IllegalArgumentException("Operator not found");
+                    default -> throw new IllegalArgumentException("Float Operator not found");
                 }
             }
         } else {
@@ -243,7 +243,7 @@ public class DataFrame {
                             new_data.add(d.data.get(i));
                         }
                     }
-                    default -> throw new IllegalArgumentException("Operator not found");
+                    default -> throw new IllegalArgumentException("String Operator not found");
                 }
             }
         }
