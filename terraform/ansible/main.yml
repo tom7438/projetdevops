@@ -1,0 +1,28 @@
+# Ce playbook ansible installe docker, pull l'image de notre DockerHub et le lance
+- name: Installation de Docker
+  hosts: all
+  become: true
+  tasks:
+    - name: Installation de Docker
+      apt:
+        name: docker.io
+        state: present
+        update_cache: yes
+      when: ansible_distribution == 'Debian'
+
+    - name: Démarrage du service Docker
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Pull Docker image
+      community.docker.docker_image:
+        name: docker.pkg.github.com/projetdevops/rtl2_datalibrary
+        source: pull
+
+    - name: Run Docker container
+      community.docker.docker_container:
+        name: my_devops
+        image: docker.pkg.github.com/projetdevops/rtl2_datalibrary:latest
+        state: started
