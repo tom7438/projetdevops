@@ -146,10 +146,10 @@ public class DataFrame {
         Pattern numbers = Pattern.compile("-?[0-9]+");
         Pattern floats = Pattern.compile("-?[0-9]+.[0-9]+");
         //récupérer la colonne et la valeur de la condition
-        String[] parts = condition.split(" ");
-        int column = getIndexesColone(parts[0]);
-        String operator = parts[1];
-        String brutValue = parts[2];
+        String[] brutValues = condition.split("[=!><]+");
+        int column = getIndexesColone(brutValues[0].trim());
+        String operator = condition.replaceAll("[^=!<>]", "");
+        String brutValue = brutValues[1].trim();
 
         //récupérer la colonne à partir de son nom
         DataFrame d = select_column(columns.keySet().toArray(new String[0]));
