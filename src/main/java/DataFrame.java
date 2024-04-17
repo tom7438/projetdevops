@@ -4,6 +4,10 @@ import java.nio.file.NoSuchFileException;
 import java.util.*;
 import java.util.regex.Pattern;
 
+/**
+ * Classe DataFrame
+ * <p> Un DataFrame est une structure de données tabulaire qui contient des colonnes de données, chaque colonne peut être de type différent (entier, flottant, chaîne de caractères).
+ */
 public class DataFrame {
 
     private final List<List<Object>> data;
@@ -12,11 +16,23 @@ public class DataFrame {
     private float min;
     private float max;
 
+    /**
+     * Constructeur de la classe DataFrame
+     *
+     * @param data    : les données du DataFrame
+     * @param columns : les colonnes du DataFrame avec leur type
+     */
     public DataFrame(List<List<Object>> data, LinkedHashMap<String, Class<?>> columns) {
         this.data = data;
         this.columns = columns;
     }
 
+    /**
+     * Constructeur de la classe DataFrame
+     *
+     * @param data    : les données du DataFrame
+     * @param columns : les colonnes du DataFrame avec leur type
+     */
     public DataFrame(Object[][] data, LinkedHashMap<String, Class<?>> columns) {
         this.data = new ArrayList<>();
         for (Object[] row : data) {
@@ -26,6 +42,12 @@ public class DataFrame {
         this.columns = columns;
     }
 
+    /**
+     * Constructeur de la classe DataFrame
+     *
+     * @param fileName : le nom du fichier csv
+     * @throws NoSuchFileException : si le fichier n'existe pas
+     */
     public DataFrame(String fileName) throws NoSuchFileException {
         this.data = new ArrayList<>();
         this.columns = new LinkedHashMap<>();
@@ -45,14 +67,29 @@ public class DataFrame {
         new DataFrameParser(scanner);
     }
 
+    /**
+     * getter de la liste des données
+     *
+     * @return la liste des données
+     */
     public List<List<Object>> getData() {
         return data;
     }
 
+    /**
+     * getter de la hashmap des colonnes (nom, type)
+     *
+     * @return la hashmap des colonnes
+     */
     public LinkedHashMap<String, Class<?>> getColumns() {
         return columns;
     }
 
+    /**
+     * Méthode pour obtenir l'index d'une colonne
+     * @param nomColonne : le nom de la colonne
+     * @return l'index de la colonne
+     */
     public int getIndexesColone(String nomColonne) {
         int index = 0;
         for (String columnName : columns.keySet()) {
@@ -64,7 +101,10 @@ public class DataFrame {
         throw new IllegalArgumentException("Le nom de la colonne est invalide");
     }
 
-    // Méthode pour ajouter une ligne au DataFrame
+    /**
+     * Méthode pour ajouter une ligne au DataFrame
+     * @param ligne : la ligne à ajouter
+     */
     public void ajouterLigne(List<Object> ligne) {
         // Validation des données d'entrée
         if (ligne == null || ligne.size() != columns.size()) {
@@ -73,7 +113,10 @@ public class DataFrame {
         data.add(new ArrayList<>(ligne));
     }
 
-    // Méthode pour supprimer une ligne du DataFrame
+    /**
+     * Méthode pour supprimer une ligne du DataFrame
+     * @param indexLigne : l'index de la ligne à supprimer
+     */
     public void supprimerLigne(int indexLigne) {
         if (indexLigne < 0 || indexLigne >= data.size()) {
             throw new IllegalArgumentException("L'index de la ligne à supprimer est invalide");
@@ -81,7 +124,11 @@ public class DataFrame {
         data.remove(indexLigne);
     }
 
-    // Méthode pour supprimer une colonne du DataFrame
+    /**
+     * Méthode pour supprimer une colonne du DataFrame
+     *
+     * @param nomColonne : le nom de la colonne à supprimer
+     */
     public void supprimerColonne(String nomColonne) {
         if (!columns.containsKey(nomColonne)) {
             throw new IllegalArgumentException("Le nom de la colonne à supprimer est invalide");
@@ -93,7 +140,13 @@ public class DataFrame {
         }
     }
 
-    // Méthode pour obtenir une valeur du DataFrame
+    /**
+     * Méthode pour obtenir la valeur d'une cellule du DataFrame
+     *
+     * @param indexLigne : l'index de la ligne
+     * @param nomColonne : le nom de la colonne
+     * @return la valeur de la cellule
+     */
     public Object obtenirValeur(int indexLigne, String nomColonne) {
         if (indexLigne < 0 || indexLigne >= data.size()) {
             throw new IllegalArgumentException("L'index de la ligne à obtenir est invalide");
@@ -105,6 +158,12 @@ public class DataFrame {
         return data.get(indexLigne).get(indexColonne);
     }
 
+    /**
+     * Méthode pour sélectionner les lignes du DataFrame selon un intervalle
+     *
+     * @param indexes : l'intervalle des lignes à sélectionner
+     * @return une nouvelle DataFrame contenant les lignes sélectionnées uniquement
+     */
     public DataFrame select_line(int[] indexes) {
         List<List<Object>> new_data = new ArrayList<>();
         for (int i = 0; i < indexes.length; i++) {
@@ -113,6 +172,12 @@ public class DataFrame {
         return new DataFrame(new_data, columns);
     }
 
+    /**
+     * Méthode pour sélectionner les colonnes du DataFrame selon un intervalle
+     *
+     * @param column_names : l'intervalle des colonnes à sélectionner
+     * @return une nouvelle DataFrame contenant les colonnes sélectionnées uniquement
+     */
     public DataFrame select_column(String[] column_names) {
         int[] indexes = new int[column_names.length];
         List<List<Object>> new_data = new ArrayList<>();
@@ -141,7 +206,12 @@ public class DataFrame {
         return new DataFrame(new_data, new_columns);
     }
 
-    //Fonction de sélection qui prend en entrée un booléen du type "A > 2" et retourne un DataFrame contenant les lignes pour lesquelles la condition est vraie.
+    /**
+     * Méthode pour sélectionner les lignes du DataFrame selon une condition (par exemple, "A > 2" équivaut à retourner les lignes où la colonne A a une valeur supérieure à 2)
+     *
+     * @param condition : la condition à vérifier
+     * @return une nouvelle DataFrame contenant les lignes pour lesquelles la condition est vraie
+     */
     public DataFrame select(String condition) {
         //récupérer la colonne et la valeur de la condition
         String[] parts = condition.split(" ");
@@ -192,6 +262,9 @@ public class DataFrame {
         return new DataFrame(new_data, d.columns);
     }
 
+    /**
+     * Méthode pour afficher le DataFrame
+     */
     public void display() {
         System.out.println(this);
     }
@@ -224,6 +297,11 @@ public class DataFrame {
         return sb.toString();
     }
 
+    /**
+     * Méthode pour afficher les n premières lignes de la DataFrame
+     *
+     * @param n : le nombre de lignes à afficher
+     */
     public void displayFirstLines(int n) {
         if (n > data.size()) {
             System.out.println("DataFrame a moins de " + n + " lignes");
@@ -252,6 +330,11 @@ public class DataFrame {
         System.out.println(sb.toString());
     }
 
+    /**
+     * Méthode pour afficher les n dernières lignes de la DataFrame
+     *
+     * @param n : le nombre de lignes à afficher
+     */
     public void displayLastLines(int n) {
         if (n > data.size()) {
             System.out.println("DataFrame a moins de " + n + " lignes");
@@ -278,6 +361,11 @@ public class DataFrame {
         System.out.println(sb.toString());
     }
 
+    /**
+     * Méthode pour calculer le nombre max de caractères de chaque colonne
+     *
+     * @return un tableau contenant le nombre max de caractères de chaque colonne
+     */
     private int[] getMaxWidth() {
         int[] maxWidths = new int[columns.size()];
         for (List<Object> row : data) {
@@ -288,7 +376,12 @@ public class DataFrame {
         return maxWidths;
     }
 
-    public StringBuilder getEnTete() {
+    /**
+     * Méthode pour obtenir l'en-tête du DataFrame
+     *
+     * @return l'en-tête du DataFrame
+     */
+    private StringBuilder getEnTete() {
         int[] maxWidths = getMaxWidth();
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("%4s", "")).append("\t"); // En-tête vide pour la première colonne
@@ -300,6 +393,12 @@ public class DataFrame {
         return sb;
     }
 
+    /**
+     * Méthode pour obtenir le minimum d'une colonne
+     *
+     * @param col : le nom de la colonne
+     * @return le minimum de la colonne (si la colonne n'est pas numérique, retourne -2 ; si la colonne n'existe pas, retourne -1)
+     */
     public float min(String col) {
         int index = 0;
         for (String key : columns.keySet()) {
@@ -333,6 +432,12 @@ public class DataFrame {
         return min;
     }
 
+    /**
+     * Méthode pour obtenir le minimum d'une colonne
+     *
+     * @param numCol : l'index de la colonne (commence à 0)
+     * @return le minimum de la colonne (si la colonne n'est pas numérique, retourne -2 ; si la colonne n'existe pas, retourne -1)
+     */
     public float min(int numCol) {
         if (numCol >= columns.size() || numCol < 0) {
             System.out.println("La colonne " + numCol + " n'existe pas");
@@ -358,6 +463,12 @@ public class DataFrame {
         return min;
     }
 
+    /**
+     * Méthode pour obtenir le maximum d'une colonne
+     *
+     * @param col : le nom de la colonne
+     * @return le maximum de la colonne (si la colonne n'est pas numérique, retourne -2 ; si la colonne n'existe pas, retourne -1)
+     */
     public float max(String col) {
         int index = 0;
         for (String key : columns.keySet()) {
@@ -393,6 +504,12 @@ public class DataFrame {
         return max;
     }
 
+    /**
+     * Méthode pour obtenir le maximum d'une colonne
+     *
+     * @param numCol : l'index de la colonne (commence à 0)
+     * @return le maximum de la colonne (si la colonne n'est pas numérique, retourne -2 ; si la colonne n'existe pas, retourne -1)
+     */
     public float max(int numCol) {
         if (numCol >= columns.size() || numCol < 0) {
             System.out.println("La colonne " + numCol + " n'existe pas");
@@ -419,6 +536,12 @@ public class DataFrame {
         return max;
     }
 
+    /**
+     * Méthode pour obtenir la moyenne d'une colonne
+     *
+     * @param col : le nom de la colonne
+     * @return la moyenne de la colonne (si la colonne n'est pas numérique, retourne -2 ; si la colonne n'existe pas, retourne -1)
+     */
     public float mean(String col) {
         int index = 0;
         for (String key : columns.keySet()) {
@@ -451,6 +574,12 @@ public class DataFrame {
         return sum / data.size();
     }
 
+    /**
+     * Méthode pour obtenir la moyenne d'une colonne
+     *
+     * @param numCol : l'index de la colonne (commence à 0)
+     * @return la moyenne de la colonne (si la colonne n'est pas numérique, retourne -2 ; si la colonne n'existe pas, retourne -1)
+     */
     public float mean(int numCol) {
         if (numCol >= columns.size() || numCol < 0) {
             System.out.println("La colonne " + numCol + " n'existe pas");
@@ -478,6 +607,12 @@ public class DataFrame {
         return res;
     }
 
+    /**
+     * Méthode pour obtenir la somme d'une colonne
+     *
+     * @param col : le nom de la colonne
+     * @return la somme des valeurs la colonne (si la colonne n'est pas numérique, retourne -2 ; si la colonne n'existe pas, retourne -1)
+     */
     public float sum(String col) {
         int index = 0;
         for (String key : columns.keySet()) {
@@ -509,6 +644,12 @@ public class DataFrame {
         return sum;
     }
 
+    /**
+     * Méthode pour obtenir la somme d'une colonne
+     *
+     * @param numCol : l'index de la colonne (commence à 0)
+     * @return la somme des valeurs de la colonne (si la colonne n'est pas numérique, retourne -2 ; si la colonne n'existe pas, retourne -1)
+     */
     public float sum(int numCol) {
         if (numCol >= columns.size() || numCol < 0) {
             System.out.println("La colonne " + numCol + " n'existe pas");
