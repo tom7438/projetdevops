@@ -36,9 +36,9 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           slug: tom7438/projetdevops
 
-  publish:
+  publish-jar:
     needs: [check-coverage]
-    name: publish jar and docker image to Github Packages
+    name: publish library jar to Github Packages
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -49,14 +49,29 @@ jobs:
         with:
           java-version: '17'  # Spécifiez ici la version de Java que vous utilisez
           distribution: 'adopt'  # Spécifiez la distribution de Java
-      - uses: docker/login-action@v3
-        with:
-          username: tom7438
-          password: ${{ secrets.DOCKER_TOKEN }}
+
       - name: Publish package
         run: mvn --batch-mode deploy
         env:
           GITHUB_TOKEN: ${{ secrets.PACKAGE_TOKEN }}
+
+  publish-docker-image:
+    needs: [check-coverage]
+    name: publish docker image to Github Packages
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Login to Github container registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build docker image
         run: docker build -t docker.pkg.github.com/${{ github.repository }}/rtl2_datalibrary:latest .
