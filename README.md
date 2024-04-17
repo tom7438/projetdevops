@@ -178,6 +178,12 @@ gcloud compute ssh --zone "us-central1-c" "terraform-instance-0" --project "devo
 sudo docker run ghcr.io/tom7438/projetdevops/rtl2_datalibrary:latest
 ```
 
+- Pour générer la documentation JavaDoc, vous pouvez exécuter la commande suivante :
+```bash
+mvn javadoc:javadoc
+cat target/site/apidocs/index.html
+```
+
 ## Feedback
 Dans l'ensemble, nous avons apprécié travailler sur ce projet, qui nous a permis de mettre en pratique les différents concepts de DevOps que nous avons appris en cours. Nous avons rencontré quelques difficultés, notamment pour la mise en place de la livraison continue, mais nous avons réussi à les surmonter en travaillant ensemble.
 Nous avons également appris à mieux collaborer en utilisant les outils de DevOps, et donc mieux comprendre les avantages de ces outils. Nous sommes fiers du résultat final.
