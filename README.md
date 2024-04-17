@@ -8,7 +8,7 @@ URL : https://tom7438.github.io/projetdevops/
 
 Badges
 
-[![codecov](https://codecov.io/gh/tom7438/Projet_DevOps/graph/badge.svg?token=5INFKCFXE6)](https://codecov.io/gh/tom7438/Projet_DevOps)
+[![codecov](https://codecov.io/gh/tom7438/projetdevops/graph/badge.svg?token=5INFKCFXE6)](https://codecov.io/gh/tom7438/projetdevops)
 
 [Consulter la couverture de code](./target/site/jacoco/index.html)
 
@@ -37,12 +37,12 @@ Notre bibliothèque d'analyse de données Java fournis les fonctionnalités suiv
   - Afficher la moyenne d'une colonne selon son nom ou selon son index de colonne si c'est des valeurs numériques
   - Afficher la somme d'une colonne selon son nom ou selon son index de colonne si c'est des valeurs numériques
 
-Notre projet est également aggrémenter d'une livraison continue :  - Maven
+Notre projet est également agrémenté d'une livraison continue :  - Maven
                                                                    - Docker
-                                                                   - Cloud
+                                                                   - Google Cloud SDK
 
-Pour le code coverage, nous avons pris JaCoCo, c'était l'outil qui nous était présenter de base comme exemple pour le projet et comme nous n'en connaissions aucun autre, il conveanit parfaitement.  
-Nous avons choisis choisit d'héberger notre projet sur GitHub car c'est l'outil avec lequel nous sommes le plus familier car nous l'utilisons depuis un moment.
+Pour le code coverage, nous avons pris JaCoCo, c'était l'outil qui nous était présenté de base comme exemple pour le projet et comme nous n'en connaissions aucun autre, il convenait parfaitement.  
+Nous avons choisi choisit d'héberger notre projet sur GitHub, car c'est l'outil avec lequel nous sommes le plus familier, parce que nous l'utilisons depuis un moment.
 
 En ce qui concerne les tests unitaires, ils sont réalisés avec JUnit 5, exploite les fonctionnalités de Java 8 ou version ultérieure, rendant les tests plus puissants et plus faciles à maintenir.
 Pour les autres outils, nous avons suivis les recommandations du sujet.
