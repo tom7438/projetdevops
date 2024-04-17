@@ -2,9 +2,9 @@
 
 Feature Branch Workflow est le fait que tout le développement de fonctionnalités doit avoir lieu dans une branche dédiée au lieu de la main branche. Cette encapsulation permet à plusieurs développeurs de travailler facilement sur une fonctionnalité particulière sans perturber la base de code principale. Cela signifie également que la main branche ne doit jamais contenir de code défectueux, ce qui constitue un énorme avantage pour les environnements d'intégration continue.  
 
-Nous avons travaillé en développant chaque feature dans une branche différente, lorsque la feature était terminée et testée, un Pull Request est envoyé sur la branche main. Alors au moins une review du code doit être effectuée par l'un des autres collaborateurs du projet, si il accepte, la feature peut alors être merge sur la branche main.
+Nous avons travaillé en développant chaque feature dans une branche différente, lorsque la feature était terminée et testée, un Pull Request est envoyé sur la branche main. Alors au moins une review du code doit être effectuée par l'un des autres collaborateurs du projet, si il accepte, la feature peut alors être merge sur la branche main. De plus, on ne peut pas merge une feature sur le main si il n'y a pas au moins 90% de code coverage sur la feature.  Cela permet de garder un pourcentage élevé et ainsi de s'assurer que notre projet est le plus fonctionnel possible.
 
-URL : https://tom7438.github.io/Projet_DevOps/
+URL : https://tom7438.github.io/projetdevops/
 
 Badges
 
