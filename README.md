@@ -173,4 +173,9 @@ Object value = def.obtenirValeur(1, "name");
 
 ## Auteurs
 
-- [ALVES Romain](
+- ALVES Romain
+- BOSSY Romain
+- CLEMENT Tom
+- FOUSSADIER Lancelin
+
+M1 INFO 2023-2024
