@@ -152,9 +152,9 @@ public class DataFrame {
         String brutValue = brutValues[1].trim();
 
         final Class<?> columnType = this.columns.get(brutValues[0].trim());
-        if(numbers.matcher(brutValue).matches() && !columnType.equals(Integer.class)) {
+        if(columnType.equals(Integer.class) && !numbers.matcher(brutValue).matches()) {
             throw new IllegalArgumentException("Value should be integer");
-        } else if (floats.matcher(brutValue).matches() && !columnType.equals(Double.class)) {
+        } else if (columnType.equals(Double.class) && !floats.matcher(brutValue).matches()) {
             throw new IllegalArgumentException("Value should be float");
         }
 
@@ -163,7 +163,7 @@ public class DataFrame {
 
         //récupérer les données de la colonne selon la condition
         List<List<Object>> new_data = new ArrayList<>();
-        if(numbers.matcher(brutValue).matches()) {
+        if(columnType.equals(Integer.class)) {
             final int value = Integer.parseInt(brutValue);
             for (int i = 0; i < d.data.size(); i++) {
                 switch (operator) {
@@ -200,7 +200,7 @@ public class DataFrame {
                     default -> throw new IllegalArgumentException("Int Operator not found");
                 }
             }
-        } else if (floats.matcher(brutValue).matches()) {
+        } else if (columnType.equals(Double.class)) {
             final double value = Double.parseDouble(brutValue);
             for (int i = 0; i < d.data.size(); i++) {
                 switch (operator) {
@@ -238,9 +238,6 @@ public class DataFrame {
                 }
             }
         } else {
-            if (!columnType.equals(String.class)) {
-                throw new IllegalArgumentException("Value should be string");
-            }
             for (int i = 0; i < d.data.size(); i++) {
                 switch (operator) {
                     case "==" -> {

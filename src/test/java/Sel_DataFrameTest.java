@@ -255,4 +255,14 @@ public class Sel_DataFrameTest {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> df.select("Age <> 2"));
         assertEquals("Int Operator not found", exception.getMessage());
     }
+
+    @Test
+    public void testSelect_WrongValueType() {
+        System.out.println("_________________Sélection de colonnes avec une valeur de sélection du mauvais type_________________");
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> df.select("Age < 2.0"));
+        assertEquals("Value should be integer", exception.getMessage());
+
+        exception = assertThrows(IllegalArgumentException.class, () -> df.select("Je sais pas < 2"));
+        assertEquals("Value should be float", exception.getMessage());
+    }
 }
