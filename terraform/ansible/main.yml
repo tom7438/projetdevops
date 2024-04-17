@@ -18,11 +18,11 @@
 
     - name: Pull Docker image
       community.docker.docker_image:
-        name: docker.pkg.github.com/projetdevops/rtl2_datalibrary
+        name: ghcr.io/tom7438/projetdevops/rtl2_datalibrary
         source: pull
 
     - name: Run Docker container
       community.docker.docker_container:
         name: my_devops
-        image: docker.pkg.github.com/projetdevops/rtl2_datalibrary:latest
+        image: ghcr.io/tom7438/projetdevops/rtl2_datalibrary:latest
         state: started
