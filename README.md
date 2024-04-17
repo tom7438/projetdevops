@@ -21,6 +21,8 @@
   - [Travail collaboratif](#travail-collaboratif)
   - [Livraison continue](#livraison-continue)
   - [Utilisation](#utilisation)
+  - [Feedback](#feedback)
+  - [Auteurs](#auteurs)
   - [Badges](#badges)
 
 ## Description
@@ -175,6 +177,14 @@ gcloud compute ssh --zone "us-central1-c" "terraform-instance-0" --project "devo
 # lancer l'image docker
 sudo docker run ghcr.io/tom7438/projetdevops/rtl2_datalibrary:latest
 ```
+
+## Feedback
+Dans l'ensemble, nous avons apprécié travailler sur ce projet, qui nous a permis de mettre en pratique les différents concepts de DevOps que nous avons appris en cours. Nous avons rencontré quelques difficultés, notamment pour la mise en place de la livraison continue, mais nous avons réussi à les surmonter en travaillant ensemble.
+Nous avons également appris à mieux collaborer en utilisant les outils de DevOps, et donc mieux comprendre les avantages de ces outils. Nous sommes fiers du résultat final.
+Le fait de travailler en groupe était vraiment un plus, cela nous a permis de mieux comprendre les concepts de DevOps et de mieux les appliquer. Nous avons par ailleurs appris à mieux communiquer et à mieux travailler ensemble sur un même projet, ce qui est essentiel pour un projet de développement logiciel.
+Découvrir seuls le XML et yaml pour l'automatisation maven et les workflows GitHub Actions a été un peu difficile, mais nous avons réussi à les maîtriser grâce à la documentation et à l'aide de nos collègues.
+Nous avons essayé d'utiliser le plus possible les outils de DevOps pour améliorer notre projet et notre workflow, et nous pensons que cela a été un succès.
+Seul petit bémol, nous n'avons pas réussi à continuer à utiliser le projet Atlassian pour le suivi de projet.
 
 ## Auteurs
 
