@@ -49,13 +49,14 @@ jobs:
         with:
           java-version: '17'  # Spécifiez ici la version de Java que vous utilisez
           distribution: 'adopt'  # Spécifiez la distribution de Java
+      - uses: docker/login-action@v3
+        with:
+          username: "tom7438"
+          password: ${{ secrets.DOCKER_TOKEN }}
       - name: Publish package
         run: mvn --batch-mode deploy
         env:
           GITHUB_TOKEN: ${{ secrets.PACKAGE_TOKEN }}
-
-      - name: Login in Docker
-        run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u "tom7438" --password-stdin docker.pkg.github.com
 
       - name: Build docker image
         run: docker build -t docker.pkg.github.com/${{ github.repository }}/rtl2_datalibrary:latest .
