@@ -55,7 +55,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PACKAGE_TOKEN }}
 
       - name: Login in Docker
-        run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u "${{ github.actor }}" --password-stdin docker.pkg.github.com
+        run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u "tom7438" --password-stdin docker.pkg.github.com
 
       - name: Build docker image
         run: docker build -t docker.pkg.github.com/${{ github.repository }}/rtl2_datalibrary:latest .
