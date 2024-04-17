@@ -7,5 +7,4 @@ COPY ./pom.xml /
 
 RUN mvn clean && mvn compile
 
-CMD ls /
 CMD java -classpath /target/classes/ DockerScenario
