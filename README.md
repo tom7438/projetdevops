@@ -168,7 +168,12 @@ Object value = def.obtenirValeur(1, "name");
 
 - Pour déployer l'application sur Google Cloud, vous pouvez exécuter la commande suivante :
 ```bash
-# TODO
+cd terraform
+terraform apply --auto-approve
+# Se connecter à la VM en ssh
+gcloud compute ssh --zone "us-central1-c" "terraform-instance-0" --project "devops2024rtl2"
+# lancer l'image docker
+sudo docker run ghcr.io/tom7438/projetdevops/rtl2_datalibrary:latest
 ```
 
 ## Auteurs
