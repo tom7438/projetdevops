@@ -144,12 +144,19 @@ public class DataFrame {
     //Fonction de sélection qui prend en entrée un booléen du type "A > 2" et retourne un DataFrame contenant les lignes pour lesquelles la condition est vraie.
     public DataFrame select(String condition) {
         Pattern numbers = Pattern.compile("-?[0-9]+");
-        Pattern floats = Pattern.compile("-?[0-9]+.[0-9]+");
+        Pattern floats = Pattern.compile("-?[0-9]+\\.[0-9]+");
         //récupérer la colonne et la valeur de la condition
         String[] brutValues = condition.split("[=!><]+");
         int column = getIndexesColone(brutValues[0].trim());
         String operator = condition.replaceAll("[^=!<>]", "");
         String brutValue = brutValues[1].trim();
+
+        final Class<?> columnType = this.columns.get(brutValues[0].trim());
+        if(numbers.matcher(brutValue).matches() && !columnType.equals(Integer.class)) {
+            throw new IllegalArgumentException("Value should be integer");
+        } else if (floats.matcher(brutValue).matches() && !columnType.equals(Double.class)) {
+            throw new IllegalArgumentException("Value should be float");
+        }
 
         //récupérer la colonne à partir de son nom
         DataFrame d = select_column(columns.keySet().toArray(new String[0]));
@@ -194,7 +201,7 @@ public class DataFrame {
                 }
             }
         } else if (floats.matcher(brutValue).matches()) {
-            final float value = Float.parseFloat(brutValue);
+            final double value = Double.parseDouble(brutValue);
             for (int i = 0; i < d.data.size(); i++) {
                 switch (operator) {
                     case ">" -> {
@@ -231,6 +238,9 @@ public class DataFrame {
                 }
             }
         } else {
+            if (!columnType.equals(String.class)) {
+                throw new IllegalArgumentException("Value should be string");
+            }
             for (int i = 0; i < d.data.size(); i++) {
                 switch (operator) {
                     case "==" -> {
@@ -629,8 +639,8 @@ public class DataFrame {
                     Class<?> colClass = columns.get(colsNames.get(i));
                     if (colClass == Integer.class) {
                         lineData.add(Integer.parseInt(data));
-                    } else if (colClass == Float.class) {
-                        lineData.add(Float.parseFloat(data));
+                    } else if (colClass == Double.class) {
+                        lineData.add(Double.parseDouble(data));
                     } else {
                         lineData.add(data);
                     }
@@ -642,12 +652,12 @@ public class DataFrame {
 
         private Class<?> findDataType(String data) {
             Pattern numbers = Pattern.compile("-?[0-9]+");
-            Pattern floats = Pattern.compile("-?[0-9]+.[0-9]+");
+            Pattern floats = Pattern.compile("-?[0-9]+\\.[0-9]+");
 
             if (numbers.matcher(data).matches()) {
                 return Integer.class;
             } else if (floats.matcher(data).matches()) {
-                return Float.class;
+                return Double.class;
             }
             return String.class;
         }

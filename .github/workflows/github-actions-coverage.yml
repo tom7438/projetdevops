@@ -38,7 +38,7 @@ jobs:
 
   publish:
     needs: [check-coverage]
-    name: publish jar to Github Packages
+    name: publish jar and docker image to Github Packages
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -53,3 +53,9 @@ jobs:
         run: mvn --batch-mode deploy
         env:
           GITHUB_TOKEN: ${{ secrets.PACKAGE_TOKEN }}
+
+      - name: Build docker image
+        run: docker build -t docker.pkg.github.com/${{ github.repository }}/rtl2_datalibrary:latest .
+
+      - name: Publish docker image
+        run: docker push docker.pkg.github.com/${{ github.repository }}/rtl2_datalibrary:latest
