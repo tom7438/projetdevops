@@ -438,6 +438,12 @@ public class DataFrame {
                 maxWidths[i] = Math.max(maxWidths[i], String.valueOf(row.get(i)).length());
             }
         }
+        // Vérifier que les noms des colonnes ne soit pas plus grand
+        int i = 0;
+        for (String key : columns.keySet()) {
+            maxWidths[i] = Math.max(maxWidths[i], key.length());
+            i++;
+        }
         return maxWidths;
     }
 
