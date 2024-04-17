@@ -1,231 +1,268 @@
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class Sel_DataFrameTest {
-    @Test
-    public void testSelectLine() {
-        DataFrame df = new DataFrame(
+    static DataFrame df;
+
+    // Avant chaque test, on crée un DataFrame de test :
+    @BeforeEach
+    public void testDataFrameCreationList() {
+        df = new DataFrame(
             Arrays.asList(
-                Arrays.asList(1, 2, 3),
-                Arrays.asList(4, 5, 6),
-                Arrays.asList(7, 8, 9)
+                    Arrays.asList("Alves", "Jean-pierre", 3, 1.0),
+                    Arrays.asList("Bossy", "Jean Patrick", 6, 2.0),
+                    Arrays.asList("De Moulin", "Catapulte", 9, 3.0),
+                    Arrays.asList("Aled Plus", "D Inspiration", 12, 4.0)
             ),
             new LinkedHashMap<>() {{
-                put("A", Integer.class);
-                put("B", Integer.class);
-                put("C", Integer.class);
+                put("Nom", String.class);
+                put("Prenom", String.class);
+                put("Age", Integer.class);
+                put("Je sais pas", Double.class);
             }}
         );
+        df.display();
+        assertNotEquals(null, df);
+    }
+
+    @Test
+    public void testSelectLine() {
+        System.out.println("_________________Sélection de lignes_________________");
         DataFrame new_df = df.select_line(new int[] {0, 2});
+        new_df.display();
         assertEquals(
             new_df.getData(),
             Arrays.asList(
-                Arrays.asList(1, 2, 3),
-                Arrays.asList(7, 8, 9)
+                Arrays.asList("Alves", "Jean-pierre", 3, 1.0),
+                Arrays.asList("De Moulin", "Catapulte", 9, 3.0)
             )
         );
     }
     @Test
     public void testSelectColumn() {
-        DataFrame df = new DataFrame(
-            Arrays.asList(
-                Arrays.asList(1, 2, 3),
-                Arrays.asList(4, 5, 6),
-                Arrays.asList(7, 8, 9)
-            ),
-            new LinkedHashMap<>() {{
-                put("A", Integer.class);
-                put("B", Integer.class);
-                put("C", Integer.class);
-            }}
-        );
-        DataFrame new_df = df.select_column(new String[] {"A", "C"});
-
+        System.out.println("_________________Sélection de colonnes_________________");
+        String[] columns = new String[] {"Nom", "Age"};
+        DataFrame new_df = df.select_column(columns);
         assertEquals(
             new_df.getData(),
             Arrays.asList(
-                Arrays.asList(1, 3),
-                Arrays.asList(4, 6),
-                Arrays.asList(7, 9)
+                Arrays.asList("Alves", 3),
+                Arrays.asList("Bossy", 6),
+                Arrays.asList("De Moulin", 9),
+                Arrays.asList("Aled Plus", 12)
             )
         );
     }
     @Test
     public void testSelectColumnNotFound() {
-
-        DataFrame df = new DataFrame(
-            Arrays.asList(
-                Arrays.asList(1, 2, 3),
-                Arrays.asList(4, 5, 6),
-                Arrays.asList(7, 8, 9)
-            ),
-            new LinkedHashMap<>() {{
-                put("A", Integer.class);
-                put("B", Integer.class);
-                put("C", Integer.class);
-            }}
-        );
+        System.out.println("_________________Sélection de colonnes2_________________");
         Exception exception = assertThrows(IllegalArgumentException.class, () -> df.select_column(new String[] {"A", "D"}));
         assertEquals("Column not found", exception.getMessage());
     }
     @Test
     public void testSelect_Inferior() {
-        DataFrame df = new DataFrame(
-            Arrays.asList(
-                Arrays.asList(1, 2, 3),
-                Arrays.asList(4, 5, 6),
-                Arrays.asList(7, 8, 9)
-            ),
-            new LinkedHashMap<>() {{
-                put("A", Integer.class);
-                put("B", Integer.class);
-                put("C", Integer.class);
-            }}
-        );
-        DataFrame new_df = df.select("A > 2");
+        System.out.println("_________________Sélection de lignes2_________________");
+        DataFrame new_df = df.select("Age < 4");
         assertEquals(
             new_df.getData(),
-            Arrays.asList(
-                    List.of(4),
-                    List.of(7)
-            )
+                List.of(
+                        Arrays.asList("Alves", "Jean-pierre", 3, 1.0)
+                )
         );
     }
     @Test
     public void testSelect_Superior() {
-        DataFrame df = new DataFrame(
-            Arrays.asList(
-                Arrays.asList(1, 2, 3),
-                Arrays.asList(4, 5, 6),
-                Arrays.asList(7, 8, 9)
-            ),
-            new LinkedHashMap<>() {{
-                put("A", Integer.class);
-                put("B", Integer.class);
-                put("C", Integer.class);
-            }}
-        );
-        DataFrame new_df = df.select("A < 4");
+        System.out.println("_________________Sélection de lignes3_________________");
+        DataFrame new_df = df.select("Age > 4");
         assertEquals(
             new_df.getData(),
                 List.of(
-                        List.of(1)
+                        List.of("Bossy", "Jean Patrick", 6, 2.0),
+                        List.of("De Moulin", "Catapulte", 9, 3.0),
+                        List.of("Aled Plus", "D Inspiration", 12, 4.0)
                 )
         );
     }
     @Test
     public void testSelect_Equal() {
-        DataFrame df = new DataFrame(
-            Arrays.asList(
-                Arrays.asList(1, 2, 3),
-                Arrays.asList(4, 5, 6),
-                Arrays.asList(7, 8, 9)
-            ),
-            new LinkedHashMap<>() {{
-                put("A", Integer.class);
-                put("B", Integer.class);
-                put("C", Integer.class);
-            }}
-        );
-        DataFrame new_df = df.select("B == 5");
+        System.out.println("_________________Sélection de lignes4_________________");
+        DataFrame new_df = df.select("Age == 6");
         assertEquals(
             new_df.getData(),
                 List.of(
-                        List.of(5)
+                        List.of("Bossy", "Jean Patrick", 6, 2.0)
                 )
         );
     }
     @Test
     public void testSelect_NotEqual() {
-        DataFrame df = new DataFrame(
-            Arrays.asList(
-                Arrays.asList(1, 2, 3),
-                Arrays.asList(4, 5, 6),
-                Arrays.asList(7, 8, 9)
-            ),
-            new LinkedHashMap<>() {{
-                put("A", Integer.class);
-                put("B", Integer.class);
-                put("C", Integer.class);
-            }}
-        );
-        DataFrame new_df = df.select("B != 5");
+        System.out.println("_________________Sélection de lignes5_________________");
+        DataFrame new_df = df.select("Age != 6");
         assertEquals(
             new_df.getData(),
             Arrays.asList(
-                    List.of(2),
-                    List.of(8)
+                    Arrays.asList("Alves", "Jean-pierre", 3, 1.0),
+                    Arrays.asList("De Moulin", "Catapulte", 9, 3.0),
+                    Arrays.asList("Aled Plus", "D Inspiration", 12, 4.0)
             )
         );
     }
     @Test
     public void testSelect_InferiorEqual() {
-        DataFrame df = new DataFrame(
-            Arrays.asList(
-                Arrays.asList(1, 2, 3),
-                Arrays.asList(4, 5, 6),
-                Arrays.asList(7, 8, 9)
-            ),
-            new LinkedHashMap<>() {{
-                put("A", Integer.class);
-                put("B", Integer.class);
-                put("C", Integer.class);
-            }}
-        );
-        DataFrame new_df = df.select("A <= 4");
+        System.out.println("_________________Sélection de lignes6_________________");
+        DataFrame new_df = df.select("Age <= 6");
         assertEquals(
             new_df.getData(),
             Arrays.asList(
-                    List.of(1),
-                    List.of(4)
+                    Arrays.asList("Alves", "Jean-pierre", 3, 1.0),
+                    Arrays.asList("Bossy", "Jean Patrick", 6, 2.0)
             )
         );
     }
     @Test
     public void testSelect_SuperiorEqual() {
-        DataFrame df = new DataFrame(
-            Arrays.asList(
-                Arrays.asList(1, 2, 3),
-                Arrays.asList(4, 5, 6),
-                Arrays.asList(7, 8, 9)
-            ),
-            new LinkedHashMap<>() {{
-                put("A", Integer.class);
-                put("B", Integer.class);
-                put("C", Integer.class);
-            }}
-        );
-        DataFrame new_df = df.select("A >= 4");
+        System.out.println("_________________Sélection de lignes7_________________");
+        DataFrame new_df = df.select("Age >= 4");
         assertEquals(
             new_df.getData(),
             Arrays.asList(
-                    List.of(4),
-                    List.of(7)
+                    Arrays.asList("Bossy", "Jean Patrick", 6, 2.0),
+                    Arrays.asList("De Moulin", "Catapulte", 9, 3.0),
+                    Arrays.asList("Aled Plus", "D Inspiration", 12, 4.0)
+            )
+        );
+    }
+    //Test de la méthode select avec des float
+    @Test
+    public void testSelect_Float_Superior(){
+        System.out.println("_________________Sélection de lignes8_________________");
+        DataFrame new_df = df.select("Je sais pas > 2.0");
+        assertEquals(
+            new_df.getData(),
+            Arrays.asList(
+                Arrays.asList("De Moulin", "Catapulte", 9, 3.0),
+                Arrays.asList("Aled Plus", "D Inspiration", 12, 4.0)
             )
         );
     }
     @Test
-    public void testSelect_Notfound(){
-        DataFrame df = new DataFrame(
+    public void testSelect_Float_SuperiorEqual(){
+        System.out.println("_________________Sélection de lignes9_________________");
+        DataFrame new_df = df.select("Je sais pas >= 2.0");
+        assertEquals(
+            new_df.getData(),
             Arrays.asList(
-                Arrays.asList(1, 2, 3),
-                Arrays.asList(4, 5, 6),
-                Arrays.asList(7, 8, 9)
-            ),
-            new LinkedHashMap<>() {{
-                put("A", Integer.class);
-                put("B", Integer.class);
-                put("C", Integer.class);
-            }}
+                Arrays.asList("Bossy", "Jean Patrick", 6, 2.0),
+                Arrays.asList("De Moulin", "Catapulte", 9, 3.0),
+                Arrays.asList("Aled Plus", "D Inspiration", 12, 4.0)
+            )
         );
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> df.select("A << 2"));
-        assertEquals("Operator not found", exception.getMessage());
+    }
+    @Test
+    public void testSelect_Float_Inferior(){
+        System.out.println("_________________Sélection de lignes10_________________");
+        DataFrame new_df = df.select("Je sais pas < 2.0");
+        assertEquals(
+            new_df.getData(),
+                List.of(
+                        Arrays.asList("Alves", "Jean-pierre", 3, 1.0)
+                )
+        );
+    }
+    @Test
+    public void testSelect_Float_InferiorEqual(){
+        System.out.println("_________________Sélection de lignes11_________________");
+        DataFrame new_df = df.select("Je sais pas <= 2.0");
+        assertEquals(
+            new_df.getData(),
+            Arrays.asList(
+                Arrays.asList("Alves", "Jean-pierre", 3, 1.0),
+                Arrays.asList("Bossy", "Jean Patrick", 6, 2.0)
+            )
+        );
+    }
+    @Test
+    public void testSelect_Float_Equal(){
+        System.out.println("_________________Sélection de lignes12_________________");
+        DataFrame new_df = df.select("Je sais pas == 2.0");
+        assertEquals(
+            new_df.getData(),
+                List.of(
+                        Arrays.asList("Bossy", "Jean Patrick", 6, 2.0)
+                )
+        );
+    }
+    @Test
+    public void testSelect_Float_NotEqual(){
+        System.out.println("_________________Sélection de lignes13_________________");
+        DataFrame new_df = df.select("Je sais pas != 2.0");
+        assertEquals(
+            new_df.getData(),
+            Arrays.asList(
+                Arrays.asList("Alves", "Jean-pierre", 3, 1.0),
+                Arrays.asList("De Moulin", "Catapulte", 9, 3.0),
+                Arrays.asList("Aled Plus", "D Inspiration", 12, 4.0)
+            )
+        );
+    }
+    //Test de la méthode select avec des String
+    @Test
+    public void testSelect_String_Equal(){
+        System.out.println("_________________Sélection de lignes14_________________");
+        DataFrame new_df = df.select("Nom == Alves");
+        assertEquals(
+            new_df.getData(),
+                List.of(
+                        Arrays.asList("Alves", "Jean-pierre", 3, 1.0)
+                )
+        );
+    }
+    @Test
+    public void testSelect_String_NotEqual(){
+        System.out.println("_________________Sélection de lignes15_________________");
+        DataFrame new_df = df.select("Nom != Alves");
+        assertEquals(
+            new_df.getData(),
+            Arrays.asList(
+                Arrays.asList("Bossy", "Jean Patrick", 6, 2.0),
+                Arrays.asList("De Moulin", "Catapulte", 9, 3.0),
+                Arrays.asList("Aled Plus", "D Inspiration", 12, 4.0)
+            )
+        );
+    }
+    //Test de la méthode select avec des erreurs
+    @Test
+    public void testSelect_Notfound(){
+        System.out.println("_________________Sélection de lignes8_________________");
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> df.select("Nom << Alves"));
+        assertEquals("String Operator not found", exception.getMessage());
+    }
+    @Test
+    public void testSelect_Notfound2(){
+        System.out.println("_________________Sélection de lignes9_________________");
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> df.select("Je sais pas >< 2.0"));
+        assertEquals("Float Operator not found", exception.getMessage());
+    }
+    @Test
+    public void testSelect_Notfound3(){
+        System.out.println("_________________Sélection de lignes10_________________");
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> df.select("Age <> 2"));
+        assertEquals("Int Operator not found", exception.getMessage());
     }
 
+    @Test
+    public void testSelect_WrongValueType() {
+        System.out.println("_________________Sélection de colonnes avec une valeur de sélection du mauvais type_________________");
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> df.select("Age < 2.0"));
+        assertEquals("Value should be integer", exception.getMessage());
+
+        exception = assertThrows(IllegalArgumentException.class, () -> df.select("Je sais pas < 2"));
+        assertEquals("Value should be float", exception.getMessage());
+    }
 }

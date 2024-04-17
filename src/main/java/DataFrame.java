@@ -213,53 +213,118 @@ public class DataFrame {
      * @return une nouvelle DataFrame contenant les lignes pour lesquelles la condition est vraie
      */
     public DataFrame select(String condition) {
+        Pattern numbers = Pattern.compile("-?[0-9]+");
+        Pattern floats = Pattern.compile("-?[0-9]+\\.[0-9]+");
         //récupérer la colonne et la valeur de la condition
-        String[] parts = condition.split(" ");
-        String column = parts[0];
-        String operator = parts[1];
-        int value = Integer.parseInt(parts[2]);
+        String[] brutValues = condition.split("[=!><]+");
+        int column = getIndexesColone(brutValues[0].trim());
+        String operator = condition.replaceAll("[^=!<>]", "");
+        String brutValue = brutValues[1].trim();
+
+        final Class<?> columnType = this.columns.get(brutValues[0].trim());
+        if(columnType.equals(Integer.class) && !numbers.matcher(brutValue).matches()) {
+            throw new IllegalArgumentException("Value should be integer");
+        } else if (columnType.equals(Double.class) && !floats.matcher(brutValue).matches()) {
+            throw new IllegalArgumentException("Value should be float");
+        }
 
         //récupérer la colonne à partir de son nom
-        DataFrame d = select_column(new String[]{column});
+        DataFrame d = select_column(columns.keySet().toArray(new String[0]));
 
         //récupérer les données de la colonne selon la condition
         List<List<Object>> new_data = new ArrayList<>();
-        for (int i = 0; i < d.data.size(); i++) {
-            switch (operator) {
-                case ">" -> {
-                    if ((int) d.data.get(i).get(0) > value) {
-                        new_data.add(d.data.get(i));
+        if(columnType.equals(Integer.class)) {
+            final int value = Integer.parseInt(brutValue);
+            for (int i = 0; i < d.data.size(); i++) {
+                switch (operator) {
+                    case ">" -> {
+                        if ((int) d.data.get(i).get(column) > value) {
+                            new_data.add(d.data.get(i));
+                        }
                     }
-                }
-                case "<" -> {
-                    if ((int) d.data.get(i).get(0) < value) {
-                        new_data.add(d.data.get(i));
+                    case "<" -> {
+                        if ((int) d.data.get(i).get(column) < value) {
+                            new_data.add(d.data.get(i));
+                        }
                     }
-                }
-                case ">=" -> {
-                    if ((int) d.data.get(i).get(0) >= value) {
-                        new_data.add(d.data.get(i));
+                    case ">=" -> {
+                        if ((int) d.data.get(i).get(column) >= value) {
+                            new_data.add(d.data.get(i));
+                        }
                     }
-                }
-                case "<=" -> {
-                    if ((int) d.data.get(i).get(0) <= value) {
-                        new_data.add(d.data.get(i));
+                    case "<=" -> {
+                        if ((int) d.data.get(i).get(column) <= value) {
+                            new_data.add(d.data.get(i));
+                        }
                     }
-                }
-                case "==" -> {
-                    if ((int) d.data.get(i).get(0) == value) {
-                        new_data.add(d.data.get(i));
+                    case "==" -> {
+                        if ((int) d.data.get(i).get(column) == value) {
+                            new_data.add(d.data.get(i));
+                        }
                     }
-                }
-                case "!=" -> {
-                    if ((int) d.data.get(i).get(0) != value) {
-                        new_data.add(d.data.get(i));
+                    case "!=" -> {
+                        if ((int) d.data.get(i).get(column) != value) {
+                            new_data.add(d.data.get(i));
+                        }
                     }
+                    default -> throw new IllegalArgumentException("Int Operator not found");
                 }
-                default -> throw new IllegalArgumentException("Operator not found");
+            }
+        } else if (columnType.equals(Double.class)) {
+            final double value = Double.parseDouble(brutValue);
+            for (int i = 0; i < d.data.size(); i++) {
+                switch (operator) {
+                    case ">" -> {
+                        if ((double) d.data.get(i).get(column) > value) {
+                            new_data.add(d.data.get(i));
+                        }
+                    }
+                    case "<" -> {
+                        if ((double) d.data.get(i).get(column) < value) {
+                            new_data.add(d.data.get(i));
+                        }
+                    }
+                    case ">=" -> {
+                        if ((double) d.data.get(i).get(column) >= value) {
+                            new_data.add(d.data.get(i));
+                        }
+                    }
+                    case "<=" -> {
+                        if ((double) d.data.get(i).get(column) <= value) {
+                            new_data.add(d.data.get(i));
+                        }
+                    }
+                    case "==" -> {
+                        if ((double) d.data.get(i).get(column) == value) {
+                            new_data.add(d.data.get(i));
+                        }
+                    }
+                    case "!=" -> {
+                        if ((double) d.data.get(i).get(column) != value) {
+                            new_data.add(d.data.get(i));
+                        }
+                    }
+                    default -> throw new IllegalArgumentException("Float Operator not found");
+                }
+            }
+        } else {
+            for (int i = 0; i < d.data.size(); i++) {
+                switch (operator) {
+                    case "==" -> {
+                        if (d.data.get(i).get(column).toString().equals(brutValue)) {
+                            new_data.add(d.data.get(i));
+                        }
+                    }
+                    case "!=" -> {
+                        if (!d.data.get(i).get(column).toString().equals(brutValue)) {
+                            new_data.add(d.data.get(i));
+                        }
+                    }
+                    default -> throw new IllegalArgumentException("String Operator not found");
+                }
             }
         }
-        return new DataFrame(new_data, d.columns);
+        return new DataFrame(new_data, this.columns);
     }
 
     /**
@@ -712,8 +777,8 @@ public class DataFrame {
                     Class<?> colClass = columns.get(colsNames.get(i));
                     if (colClass == Integer.class) {
                         lineData.add(Integer.parseInt(data));
-                    } else if (colClass == Float.class) {
-                        lineData.add(Float.parseFloat(data));
+                    } else if (colClass == Double.class) {
+                        lineData.add(Double.parseDouble(data));
                     } else {
                         lineData.add(data);
                     }
@@ -725,12 +790,12 @@ public class DataFrame {
 
         private Class<?> findDataType(String data) {
             Pattern numbers = Pattern.compile("-?[0-9]+");
-            Pattern floats = Pattern.compile("-?[0-9]+.[0-9]+");
+            Pattern floats = Pattern.compile("-?[0-9]+\\.[0-9]+");
 
             if (numbers.matcher(data).matches()) {
                 return Integer.class;
             } else if (floats.matcher(data).matches()) {
-                return Float.class;
+                return Double.class;
             }
             return String.class;
         }

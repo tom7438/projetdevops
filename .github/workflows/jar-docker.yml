@@ -1,0 +1,45 @@
+name: Library's jar and docker image
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  publish-jar:
+    name: publish library jar to Github Packages
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '17'  # Spécifiez ici la version de Java que vous utilisez
+          distribution: 'adopt'  # Spécifiez la distribution de Java
+
+      - name: Publish package
+        run: mvn --batch-mode deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.PACKAGE_TOKEN }}
+
+  publish-docker-image:
+    name: publish docker image to Github Packages
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to GitHub Packages
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+
+      - name: Build docker image
+        run: docker build -t docker.pkg.github.com/${{ github.repository }}/rtl2_datalibrary:latest .
+
+      - name: Publish docker image
+        run: docker push docker.pkg.github.com/${{ github.repository }}/rtl2_datalibrary:latest

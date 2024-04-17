@@ -35,21 +35,3 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           slug: tom7438/projetdevops
-
-  publish:
-    needs: [check-coverage]
-    name: publish jar to Github Packages
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
-        with:
-          java-version: '17'  # Spécifiez ici la version de Java que vous utilisez
-          distribution: 'adopt'  # Spécifiez la distribution de Java
-      - name: Publish package
-        run: mvn --batch-mode deploy
-        env:
-          GITHUB_TOKEN: ${{ secrets.PACKAGE_TOKEN }}
