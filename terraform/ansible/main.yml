@@ -8,7 +8,7 @@
         name: docker.io
         state: present
         update_cache: yes
-      when: ansible_distribution == 'Debian'
+      when: ansible_distribution == 'Ubuntu'
 
     - name: Démarrage du service Docker
       service:

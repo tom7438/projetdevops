@@ -16,11 +16,11 @@ resource "google_compute_instance" "vm_instance" {
   count        = 2
   name         = "${var.instance-name}-${count.index}"
 
-  machine_type = "f1-micro"
+  machine_type = "n1-standard-2"
 
   boot_disk {
     initialize_params {
-      image = "debian-cloud/debian-10"
+      image = "ubuntu-minimal-2204-lts"
     }
   }
 
