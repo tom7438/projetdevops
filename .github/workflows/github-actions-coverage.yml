@@ -51,7 +51,7 @@ jobs:
           distribution: 'adopt'  # Spécifiez la distribution de Java
       - uses: docker/login-action@v3
         with:
-          username: "tom7438"
+          username: tom7438
           password: ${{ secrets.DOCKER_TOKEN }}
       - name: Publish package
         run: mvn --batch-mode deploy
