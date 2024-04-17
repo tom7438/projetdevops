@@ -71,9 +71,9 @@ public class Sel_DataFrameTest {
         DataFrame new_df = df.select("Age < 4");
         assertEquals(
             new_df.getData(),
-            Arrays.asList(
-                Arrays.asList("Alves", "Jean-pierre", 3, 1.0)
-            )
+                List.of(
+                        Arrays.asList("Alves", "Jean-pierre", 3, 1.0)
+                )
         );
     }
     @Test
@@ -170,9 +170,9 @@ public class Sel_DataFrameTest {
         DataFrame new_df = df.select("Je sais pas < 2.0");
         assertEquals(
             new_df.getData(),
-            Arrays.asList(
-                Arrays.asList("Alves", "Jean-pierre", 3, 1.0)
-            )
+                List.of(
+                        Arrays.asList("Alves", "Jean-pierre", 3, 1.0)
+                )
         );
     }
     @Test
@@ -193,9 +193,9 @@ public class Sel_DataFrameTest {
         DataFrame new_df = df.select("Je sais pas == 2.0");
         assertEquals(
             new_df.getData(),
-            Arrays.asList(
-                Arrays.asList("Bossy", "Jean Patrick", 6, 2.0)
-            )
+                List.of(
+                        Arrays.asList("Bossy", "Jean Patrick", 6, 2.0)
+                )
         );
     }
     @Test
@@ -218,9 +218,9 @@ public class Sel_DataFrameTest {
         DataFrame new_df = df.select("Nom == Alves");
         assertEquals(
             new_df.getData(),
-            Arrays.asList(
-                Arrays.asList("Alves", "Jean-pierre", 3, 1.0)
-            )
+                List.of(
+                        Arrays.asList("Alves", "Jean-pierre", 3, 1.0)
+                )
         );
     }
     @Test
