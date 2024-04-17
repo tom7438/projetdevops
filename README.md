@@ -8,7 +8,7 @@ URL : https://tom7438.github.io/projetdevops/
 
 Badges
 
-[![codecov](https://codecov.io/gh/tom7438/Projet_DevOps/graph/badge.svg?token=5INFKCFXE6)](https://codecov.io/gh/tom7438/Projet_DevOps)
+[![codecov](https://codecov.io/gh/tom7438/projetdevops/graph/badge.svg?token=5INFKCFXE6)](https://codecov.io/gh/tom7438/projetdevops)
 
 [Consulter la couverture de code](./target/site/jacoco/index.html)
 
