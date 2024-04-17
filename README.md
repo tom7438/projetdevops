@@ -39,7 +39,7 @@ Notre bibliothèque d'analyse de données Java fournis les fonctionnalités suiv
 
 Notre projet est également aggrémenter d'une livraison continue :  - Maven
                                                                    - Docker
-                                                                   - 
+                                                                   - Cloud
 
 Pour le code coverage, nous avons pris JaCoCo, c'était l'outil qui nous était présenter de base comme exemple pour le projet et comme nous n'en connaissions aucun autre, il conveanit parfaitement.  
 Nous avons choisis choisit d'héberger notre projet sur GitHub car c'est l'outil avec lequel nous sommes le plus familier car nous l'utilisons depuis un moment.
