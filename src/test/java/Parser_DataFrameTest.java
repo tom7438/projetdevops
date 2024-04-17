@@ -83,7 +83,7 @@ class Parser_DataFrameTest {
                         values[i][j] = randomString(random.nextInt(10) + 5);
                         break;
                     case 2:
-                        values[i][j] = random.nextFloat();
+                        values[i][j] = random.nextDouble();
                         break;
                 }
             }
