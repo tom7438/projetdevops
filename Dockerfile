@@ -1,4 +1,4 @@
-FROM ubuntu
+FROM ubuntu:24.10
 
 RUN apt update && apt install openjdk-17-jdk -y && apt install maven -y && mkdir -p /src
 
